@@ -4,7 +4,6 @@ const volleyball = require("volleyball");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const db = require("./config/db");
-const models = require("./models");
 const routes = require("./routes");
 
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
