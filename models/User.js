@@ -28,6 +28,12 @@ User.init(
       type: s.STRING,
       allowNull: false,
     },
+    fullName: {
+      type: s.VIRTUAL,
+      get: function() {
+        return `${this.name} ${this.lastName}`
+      }
+    },
     email: {
       type: s.STRING,
       allowNull: false,

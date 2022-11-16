@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon api/server.js",
-    "start": "node server.js",
+    "start": "nodemon api/server.js",
     "seed": "node ./seeder"
   },
   "proxy": "http://localhost:3001",
