@@ -1,6 +1,10 @@
 const s = require("sequelize");
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
+const Office = require("./Office");
+const UserRole = require("./UserRole");
+const Incident = require("./Incident");
+const Item = require("./Item");
 
 class User extends s.Model {
   hash(password, salt) {
@@ -65,4 +69,10 @@ User.beforeCreate((user) => {
     user.password = hash;
   });
 });
+
+User.UserRole = User.belongsTo(UserRole);
+User.Office = User.belongsTo(Office);
+User.Item = User.hasMany(Item);
+User.Incident = User.hasMany(Incident);
+
 module.exports = User;
