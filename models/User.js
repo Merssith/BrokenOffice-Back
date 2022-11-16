@@ -38,14 +38,14 @@ User.init(
       type: s.STRING,
     },
     telephone: {
-        type: s.INTEGER,
-      },
+      type: s.INTEGER,
+    },
     geoCords: {
       type: s.STRING,
     },
     avatar: {
       type: s.STRING,
-    }
+    },
   },
   { sequelize: db, modelName: "user" }
 );
