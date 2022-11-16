@@ -11,7 +11,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(volleyball);
 app.use("/api", routes);
- 
+
 db.sync({ force: false })
   .then(() => {
     app.listen(3001, () => {
