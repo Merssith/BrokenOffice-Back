@@ -1,7 +1,22 @@
-const User = require("../models/User");
+const { User } = require("../models");
 
 exports.getAllUsers = async () => {
-  const users = await User.findAll();
+  const users = await User.findAll({
+    include: [
+      {
+        association: User.UserRole,
+      },
+      {
+        association: User.Office,
+      },
+      {
+        association: User.Item,
+      },
+      {
+        association: User.Incident,
+      },
+    ],
+  });
   return users;
 };
 
