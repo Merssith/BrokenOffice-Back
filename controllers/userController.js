@@ -8,6 +8,14 @@ exports.getAllUsers = (req, res) => {
     .catch((err) => res.status(400).send(err));
 };
 
+exports.getUser = (req, res) => {
+  const id = req.params.id;
+  userService
+  .getUser(id)
+  .then((user) => res.status(200).send(user))
+  .catch((err) => res.status(400).send(err));
+}
+
 exports.createUser = (req, res) => {
   const user = req.body;
   userService

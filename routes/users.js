@@ -6,22 +6,25 @@ const userController = require("../controllers/userController");
 // GET ALL USERS
 router.get("/all", userController.getAllUsers);
 
+// GET USER
+router.get("/:id", userController.getUser)
+
 // POST NEW USER
 router.post("/", userController.createUser);
 
 // LOGIN USER
 router.post("/login", userController.loginUser);
 
-//GET ME
+// GET ME
 router.get("/me", validateAuth, userController.getMe);
 
-//LOGOUT USER
+// LOGOUT USER
 router.get("/logout", userController.logoutUser);
 
-//EDIT USER
+// EDIT USER
 router.put("/update/:id", userController.editUser);
 
-//DELETE USER
+// DELETE USER
 router.delete("/delete/:id", userController.deleteUser);
 
 module.exports = router;

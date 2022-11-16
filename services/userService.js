@@ -5,6 +5,11 @@ exports.getAllUsers = async () => {
   return users;
 };
 
+exports.getUser = async (id) => {
+  const user = await User.findByPk(id)
+  return user;
+}
+
 exports.createUser = async (user) => {
   const newUser = await User.create(user);
   return newUser;

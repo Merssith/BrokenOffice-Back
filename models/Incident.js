@@ -7,7 +7,7 @@ Incident.init(
   {
     status: {
       type: Sequelize.STRING,
-      allowNull: false,
+      defaultValue: "Pending",
     },
     geoCords: {
       type: Sequelize.STRING,
