@@ -22,10 +22,9 @@ exports.getIncident = (req, res) => {
 };
 
 exports.createIncident = (req, res) => {
-  const userId = req.user.id;
   const incident = req.body;
   incidentService
-    .createIncident(incident, userId)
+    .createIncident(incident)
     .then((newIncident) => res.status(201).send(newIncident))
     .catch((err) => res.status(400).send(err));
 };
