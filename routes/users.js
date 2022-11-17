@@ -8,7 +8,7 @@ const userController = require("../controllers/userController");
 router.get("/all", userController.getAllUsers);
 
 // GET USER
-router.get("/:id", userController.getUser)
+router.get("/:id", userController.getUser);
 
 // POST NEW USER
 router.post("/", userController.createUser);
@@ -20,7 +20,7 @@ router.post("/login", userController.loginUser);
 router.get("/me", validateAuth, userController.getMe);
 
 // LOGOUT USER
-router.get("/logout", userController.logoutUser);
+router.post("/logout", userController.logoutUser);
 
 // EDIT USER
 router.put("/update/:id", userController.editUser);

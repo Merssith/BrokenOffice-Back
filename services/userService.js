@@ -22,9 +22,24 @@ exports.getAllUsers = async () => {
 };
 
 exports.getUser = async (id) => {
-  const user = await User.findByPk(id)
+  const user = await User.findByPk(id, {
+    include: [
+      {
+        association: User.UserRole,
+      },
+      {
+        association: User.Office,
+      },
+      {
+        association: User.Item,
+      },
+      {
+        association: User.Incident,
+      },
+    ],
+  });
   return user;
-}
+};
 
 exports.createUser = async (user) => {
   const newUser = await User.create(user);
