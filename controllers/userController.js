@@ -52,3 +52,12 @@ exports.deleteUser = (req, res) => {
     .then(() => res.sendStatus(202))
     .catch((err) => res.status(400).send(err));
 };
+
+exports.updateUserAvatar = (req, res) => {
+  const id = req.params.id;
+  const avatar = req.files.avatar.path;
+  userService
+    .updateUserAvatar(id, avatar)
+    .then((updatedUser) => res.send(updatedUser))
+    .catch((err) => res.status(500).send(String(err)));
+};

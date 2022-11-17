@@ -8,7 +8,6 @@ const users = [
     password: "1234",
     telephone: 1234567,
     geoCords: "[151515151],[515151212]",
-    avatar: "www.miavatar.com",
   },
   {
     name: "Admin",
@@ -17,7 +16,6 @@ const users = [
     password: "1234",
     telephone: 7654321,
     geoCords: "[34234324],[234234234]",
-    avatar: "www.avatardeadmin.com",
   },
 ];
 

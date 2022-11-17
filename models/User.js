@@ -49,6 +49,8 @@ User.init(
     },
     avatar: {
       type: s.STRING,
+      defaultValue:
+        "https://res.cloudinary.com/dsdiadotw/image/upload/v1668696029/avatar_default_rgp6yr.png",
     },
   },
   { sequelize: db, modelName: "user" }
