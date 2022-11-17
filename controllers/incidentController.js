@@ -1,14 +1,16 @@
 const incidentService = require("../services/incidentService.js");
 
 exports.getAllIncidents = (req, res) => {
-  const { id, userRoleId } = req.user;
-  let role = "";
-  if (userRoleId === 1) role = "isSuperAdmin";
-  if (userRoleId === 2) role = "isAdmin";
-  if (userRoleId === 2) role = "isUser";
+  // const { id, userRoleId } = req.user;
+  // let role = "";
+  // if (userRoleId === 1) role = "isSuperAdmin";
+  // if (userRoleId === 2) role = "isAdmin";
+  // if (userRoleId === 2) role = "isUser";
 
+  // incidentService
+  //   .getAllIncidents(id, role)
   incidentService
-    .getAllIncidents(id, role)
+    .getAllIncidents()
     .then((incidents) => res.status(200).send(incidents))
     .catch((err) => res.status(400).send(err));
 };
@@ -36,4 +38,3 @@ exports.editIncident = (req, res) => {
     .then((updatedIncident) => res.send(updatedIncident))
     .catch((err) => res.status(400).send(err));
 };
-
