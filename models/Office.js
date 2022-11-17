@@ -1,9 +1,7 @@
 const s = require("sequelize");
 const db = require("../config/db");
 
-class Office extends s.Model {
-  
-}
+class Office extends s.Model {}
 
 Office.init(
   {
@@ -14,10 +12,9 @@ Office.init(
     geoCords: {
       type: s.STRING,
       allowNull: false,
-    }
+    },
   },
   { sequelize: db, modelName: "office" }
 );
-
 
 module.exports = Office;
