@@ -40,6 +40,7 @@ exports.loginUser = async (email, password) => {
     id: user.id,
     name: user.name,
     lastName: user.lastName,
+    fullName: user.fullName,
     email: user.email,
     telephone: user.telephone,
     geoCords: user.geoCords,
