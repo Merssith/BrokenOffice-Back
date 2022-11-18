@@ -38,3 +38,17 @@ exports.editIncident = (req, res) => {
     .then((updatedIncident) => res.send(updatedIncident))
     .catch((err) => res.status(400).send(err));
 };
+
+
+exports.getSearchedIncidents = (req, res) => {
+  const { status, id } = req.query;
+  
+  let filter = null
+  if (status) filter=status
+  if (id) filter=id
+ console.log(filter)
+  incidentService
+    .getSearchedIncidents(filter)
+    .then((searchedIncident) => res.send(searchedIncident))
+    .catch((err) => res.status(400).send(err));
+};
