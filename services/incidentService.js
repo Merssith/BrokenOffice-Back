@@ -1,4 +1,6 @@
 const { Incident, User, Item } = require("../models/");
+const sequelize = require("sequelize");
+const Op = sequelize.Op;
 
 //SIN TERMINAR!
 
@@ -25,3 +27,26 @@ exports.getByUserId = async (userId) => {
   const incidents = await Incident.findAll({ where: { userId: userId } });
   return incidents;
 };
+
+exports.getSearchedIncidents = async (filter) => {
+  if (!isNumeric(filter)) {
+    const results = await Incident.findAll({
+      where: {
+        status: filter,
+      },
+    });
+    return results;
+  } else {
+    const results = await Incident.findAll({
+      where: {
+        id: filter,
+      },
+    });
+    return results;
+  }
+};
+
+function isNumeric(str) {
+  if (typeof str != "string") return false;
+  return !isNaN(str) && !isNaN(parseFloat(str));
+}
