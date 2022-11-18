@@ -1,4 +1,13 @@
-const createUserRole = require("./userRole.js");
+const createUserRoles = require("./userRole.js");
+const createOffices = require("./offices.js");
 const createUsers = require("./users.js");
+const createCategories = require("./categories.js");
+const createItems = require("./items.js");
+const createIncidents = require("./incident.js");
 
-createUserRole().then(() => createUsers());
+createUserRoles()
+  .then(() => createOffices())
+  .then(() => createUsers())
+  .then(() => createCategories())
+  .then(() => createItems())
+  .then(() => createIncidents());
