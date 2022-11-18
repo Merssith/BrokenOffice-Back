@@ -62,6 +62,13 @@ User.init(
   { sequelize: db, modelName: "user" }
 );
 
+
+User.beforeCreate((user)=> {
+  user.lastName = user.lastName[0].toUpperCase() + user.lastName.slice(1).toLowerCase()
+  user.name= user.name[0].toUpperCase() + user.name.slice(1).toLowerCase()
+  return user.lastName && user.name
+})
+
 User.beforeCreate((user) => {
   const salt = bcrypt.genSaltSync();
 
