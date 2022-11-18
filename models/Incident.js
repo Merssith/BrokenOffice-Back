@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const db = require("../config/db");
+const User = require("./User");
 
 class Incident extends Sequelize.Model {}
 
@@ -25,5 +26,6 @@ Incident.init(
     modelName: "incident",
   }
 );
+
 
 module.exports = Incident;

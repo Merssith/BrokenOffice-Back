@@ -5,10 +5,8 @@ const incidentController = require("../controllers/incidentController");
 // GET ALL INCIDENTS
 router.get("/all", incidentController.getAllIncidents);
 
-// GET INCIDENT
-router.get("/:id", incidentController.getIncident);
-
-// GET SEARCH INCIDENT
+// GET SEARCH INCIDENT BY ID / STATUS
+router.get("/search", incidentController.getSearchedIncidents);
 
 // PUT EDIT INCIDENT
 router.put("/update/:id", incidentController.editIncident);
