@@ -8,9 +8,9 @@ exports.getIncident = async (id) => {
 };
 
 exports.createIncident = async (incident) => {
-    const newIncident = await Incident.create(incident);
-    return newIncident;
-  };
+  const newIncident = await Incident.create(incident);
+  return newIncident;
+};
 
 exports.editIncident = (id, body) => {
   return Incident.findByPk(id).then((incident) => incident.update(body));
@@ -21,8 +21,7 @@ exports.getAllIncidents = async () => {
   return incidents;
 };
 
-
-
-
-
-  
+exports.getByUserId = async (userId) => {
+  const incidents = await Incident.findAll({ where: { userId: userId } });
+  return incidents;
+};

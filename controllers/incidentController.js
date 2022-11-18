@@ -38,3 +38,11 @@ exports.editIncident = (req, res) => {
     .then((updatedIncident) => res.send(updatedIncident))
     .catch((err) => res.status(400).send(err));
 };
+
+exports.getByUserId = (req, res) => {
+  const userId = req.params.userId;
+  incidentService
+    .getByUserId(userId)
+    .then((incidents) => res.send(incidents))
+    .catch((err) => res.status(400).send(err));
+};
