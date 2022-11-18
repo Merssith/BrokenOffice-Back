@@ -23,6 +23,11 @@ exports.getAllIncidents = async () => {
   return incidents;
 };
 
+exports.getByUserId = async (userId) => {
+  const incidents = await Incident.findAll({ where: { userId: userId } });
+  return incidents;
+};
+
 exports.getSearchedIncidents = async (filter) => {
   if (!isNumeric(filter)) {
     const results = await Incident.findAll({

@@ -14,4 +14,7 @@ router.put("/update/:id", incidentController.editIncident);
 // POST NEW INCIDENT
 router.post("/", incidentController.createIncident);
 
+// GET INCIDENT BY USER ID
+router.get("/byUser/:userId", incidentController.getByUserId);
+
 module.exports = router;

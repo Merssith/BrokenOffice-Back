@@ -39,6 +39,13 @@ exports.editIncident = (req, res) => {
     .catch((err) => res.status(400).send(err));
 };
 
+exports.getByUserId = (req, res) => {
+  const userId = req.params.userId;
+  incidentService
+    .getByUserId(userId)
+    .then((incidents) => res.send(incidents))
+    .catch((err) => res.status(400).send(err));
+};
 
 exports.getSearchedIncidents = (req, res) => {
   const { status, id } = req.query;
