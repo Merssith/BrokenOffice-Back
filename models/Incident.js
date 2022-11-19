@@ -20,12 +20,15 @@ Incident.init(
     photo: {
       type: Sequelize.STRING,
     },
+    date: {
+      type: Sequelize.DATEONLY,
+      defaultValue: Sequelize.NOW,
+    },
   },
   {
     sequelize: db,
     modelName: "incident",
   }
 );
-
 
 module.exports = Incident;
