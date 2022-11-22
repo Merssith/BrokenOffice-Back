@@ -18,7 +18,7 @@ exports.getAllUsers = async () => {
       },
     ],
   });
-  if (!users) throw 404;
+  if (!users.length) throw 404;
   return users;
 };
 
