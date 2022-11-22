@@ -5,23 +5,23 @@ exports.getAllUsers = (req, res) => {
   userService
     .getAllUsers()
     .then((users) => res.status(200).send(users))
-    .catch((err) => res.status(400).send(err));
+    .catch((err) => res.status(500).send(err));
 };
 
 exports.getUser = (req, res) => {
   const id = req.params.id;
   userService
-  .getUser(id)
-  .then((user) => res.status(200).send(user))
-  .catch((err) => res.status(400).send(err));
-}
+    .getUser(id)
+    .then((user) => res.status(200).send(user))
+    .catch((err) => res.status(500).send(err));
+};
 
 exports.createUser = (req, res) => {
   const user = req.body;
   userService
     .createUser(user)
     .then((newUser) => res.status(201).send(newUser))
-    .catch((err) => res.status(400).send(err));
+    .catch((err) => res.status(500).send(err));
 };
 
 exports.loginUser = async (req, res) => {
@@ -33,7 +33,7 @@ exports.loginUser = async (req, res) => {
       res.cookie("token", token);
       res.send(payload);
     })
-    .catch((err) => res.status(401).send(String(err)));
+    .catch((err) => res.status(500).send(err));
 };
 
 exports.getMe = (req, res) => {
@@ -49,8 +49,8 @@ exports.editUser = (req, res) => {
   const id = req.params.id;
   userService
     .editUser(id, req.body)
-    .then((updatedUser) => res.send(updatedUser))
-    .catch((err) => res.status(400).send(err));
+    .then((updatedUser) => res.status(202).send(updatedUser))
+    .catch((err) => res.status(500).send(err));
 };
 
 exports.deleteUser = (req, res) => {
@@ -58,7 +58,7 @@ exports.deleteUser = (req, res) => {
   userService
     .deleteUser(id)
     .then(() => res.sendStatus(202))
-    .catch((err) => res.status(400).send(err));
+    .catch((err) => res.status(500).send(err));
 };
 
 exports.updateUserAvatar = (req, res) => {
@@ -66,6 +66,6 @@ exports.updateUserAvatar = (req, res) => {
   const avatar = req.files.avatar.path;
   userService
     .updateUserAvatar(id, avatar)
-    .then((updatedUser) => res.send(updatedUser))
-    .catch((err) => res.status(500).send(String(err)));
+    .then((updatedUser) => res.status(202).send(updatedUser))
+    .catch((err) => res.status(500).send(err));
 };
