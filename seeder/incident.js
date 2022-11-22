@@ -7,6 +7,7 @@ const incidents = [
     details: "Incident report #862",
     photo: "www.myphoto.com",
     userId: 2,
+    itemId: 3,
   },
   {
     status: "CLOSE",
@@ -14,6 +15,7 @@ const incidents = [
     details: "Incident report #121",
     photo: "www.myphoto.com",
     userId: 2,
+    itemId: 4,
   },
   {
     status: "OPEN",
@@ -21,6 +23,7 @@ const incidents = [
     details: "Incident report #111",
     photo: "www.myphoto.com",
     userId: 3,
+    itemId: 5,
   },
   {
     status: "CLOSE",
@@ -28,6 +31,7 @@ const incidents = [
     details: "Incident report #642",
     photo: "www.myphoto.com",
     userId: 4,
+    itemId: 6,
   },
 ];
 
