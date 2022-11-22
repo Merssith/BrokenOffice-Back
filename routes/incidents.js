@@ -17,4 +17,7 @@ router.post("/", incidentController.createIncident);
 // GET INCIDENT BY USER ID
 router.get("/byUser/:userId", incidentController.getByUserId);
 
+// DELETE INCIDENT BY ID
+router.delete("/delete/:id", incidentController.deleteIncident);
+
 module.exports = router;

@@ -59,3 +59,11 @@ exports.getSearchedIncidents = (req, res) => {
     .then((searchedIncident) => res.send(searchedIncident))
     .catch((err) => res.status(400).send(err));
 };
+
+exports.deleteIncident = (req, res) => {
+  const id = req.params.id;
+  incidentService
+    .deleteIncident(id)
+    .then(() => res.sendStatus(202))
+    .catch((err) => res.status(400).send(err));
+};
