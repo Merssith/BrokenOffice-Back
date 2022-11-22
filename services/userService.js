@@ -18,10 +18,12 @@ exports.getAllUsers = async () => {
       },
     ],
   });
+  if (!users) throw 404;
   return users;
 };
 
 exports.getUser = async (id) => {
+  if (isNaN(id)) throw 400;
   const user = await User.findByPk(id, {
     include: [
       {
@@ -38,19 +40,23 @@ exports.getUser = async (id) => {
       },
     ],
   });
+  if (!user) throw 404;
   return user;
 };
 
 exports.createUser = async (user) => {
+  if (Object.keys(user).length === 0) return 400;
   const newUser = await User.create(user);
   return newUser;
 };
 
 exports.loginUser = async (email, password) => {
+  if (Object.keys(email).length === 0) return 400;
+  if (Object.keys(password).length === 0) return 400;
   const user = await User.findOne({ where: { email } });
-  if (!user) throw Error("USER NOT FOUND");
+  if (!user) throw 404;
   const validate = await user.validatePassword(password);
-  if (!validate) throw Error("INCORRECT PASSWORD");
+  if (!validate) throw 401;
   return {
     id: user.id,
     name: user.name,
@@ -63,11 +69,19 @@ exports.loginUser = async (email, password) => {
   };
 };
 
-exports.editUser = (id, body) => {
-  return User.findByPk(id).then((user) => user.update(body));
+exports.editUser = async (id, body) => {
+  if (isNaN(id)) throw 400;
+  const user = await User.findByPk(id);
+  if (!user) throw 404;
+  if (Object.keys(body).length === 0) return 400;
+  await user.update(body);
+  return user;
 };
 
-exports.deleteUser = (id) => {
+exports.deleteUser = async (id) => {
+  if (isNaN(id)) throw 400;
+  const user = await User.findByPk(id);
+  if (!user) throw 404;
   return User.destroy({ where: { id } });
 };
 

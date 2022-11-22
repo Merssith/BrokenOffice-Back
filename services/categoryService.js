@@ -1,21 +1,29 @@
 const Category = require("../models/Category");
 
+exports.getAllCategories = async () => {
+  const categories = await Category.findAll();
+  if (!categories) throw 404;
+  return categories;
+};
 
-  exports.getAllCategories = async () => {
-    const categories = await Category.findAll();
-    return categories;
-  };
+exports.getCategory = async (id) => {
+  if (isNaN(id)) throw 400;
+  const category = await Category.findByPk(id);
+  if (!category) throw 404;
+  return category;
+};
 
-  exports.getCategory = async (id) => {
-    const category = await Category.findByPk(id)
-    return category;
-  }
-  
-  exports.createCategory = async (category) => {
-    const newCategory = await Category.create(category);
-    return newCategory;
-  };
+exports.createCategory = async (category) => {
+  if (Object.keys(category).length === 0) return 400;
+  const newCategory = await Category.create(category);
+  return newCategory;
+};
 
-  exports.editCategory = (id, body) => {
-    return Category.findByPk(id).then((category) => category.update(body));
-  };
+exports.editCategory = async (id, body) => {
+  if (isNaN(id)) throw 400;
+  const category = await Category.findByPk(id);
+  if (!category) throw 404;
+  if (Object.keys(body).length === 0) return 400;
+  await category.update(body);
+  return category;
+};
