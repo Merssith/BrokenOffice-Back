@@ -49,3 +49,11 @@ exports.getSearchedIncidents = (req, res) => {
     .then((searchedIncident) => res.status(200).send(searchedIncident))
     .catch((err) => res.status(500).send(err));
 };
+
+exports.assignedToMe = (req, res) => {
+  const userId = req.user.id;
+  incidentService
+    .assignedToMe(userId)
+    .then((incidents) => res.status(200).send(incidents))
+    .catch((err) => res.status(500).send(err));
+};
