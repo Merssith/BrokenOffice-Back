@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const db = require("../config/db");
+const Category = require("./Category");
 
 class Item extends Sequelize.Model {}
 
@@ -22,5 +23,7 @@ Item.init(
     modelName: "item",
   }
 );
+
+Item.Category = Item.belongsTo(Category);
 
 module.exports = Item;

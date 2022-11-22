@@ -1,12 +1,24 @@
 const Office = require("../models/Office");
 
 exports.getAllOffices = async () => {
-  const offices = await Office.findAll();
+  const offices = await Office.findAll({
+    include: [
+      {
+        association: Office.Item,
+      },
+    ],
+  });
   return offices;
 };
 
 exports.getOffice = async (id) => {
-  const office = await Office.findByPk(id);
+  const office = await Office.findByPk(id, {
+    include: [
+      {
+        association: Office.Item,
+      },
+    ],
+  });
   return office;
 };
 

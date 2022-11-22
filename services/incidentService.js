@@ -5,7 +5,13 @@ const Op = sequelize.Op;
 //SIN TERMINAR!
 
 exports.getIncident = async (id) => {
-  const incident = await Incident.findByPk(id);
+  const incident = await Incident.findByPk(id, {
+    include: [
+      {
+        association: Incident.Item,
+      },
+    ],
+  });
   return incident;
 };
 
@@ -19,7 +25,13 @@ exports.editIncident = (id, body) => {
 };
 
 exports.getAllIncidents = async () => {
-  const incidents = await Incident.findAll();
+  const incidents = await Incident.findAll({
+    include: [
+      {
+        association: Incident.Item,
+      },
+    ],
+  });
   return incidents;
 };
 
@@ -38,6 +50,11 @@ exports.getSearchedIncidents = async (filter) => {
       where: {
         status: filter,
       },
+      include: [
+        {
+          association: Incident.Item,
+        },
+      ],
     });
     return results;
   } else {
@@ -45,6 +62,11 @@ exports.getSearchedIncidents = async (filter) => {
       where: {
         id: filter,
       },
+      include: [
+        {
+          association: Incident.Item,
+        },
+      ],
     });
     return results;
   }
