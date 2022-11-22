@@ -41,6 +41,26 @@ const users = [
     userRoleId: 3,
     officeId: 3,
   },
+  {
+    name: "Maribel",
+    lastName: "Navarro",
+    email: "maribel@globant.com",
+    password: "1234",
+    telephone: 1234567,
+    geoCords: "[1234],[5678]",
+    userRoleId: 2,
+    officeId: 3,
+  },
+  {
+    name: "Susana",
+    lastName: "Gimenez",
+    email: "lasugimenez@globant.com",
+    password: "1234",
+    telephone: 1234567,
+    geoCords: "[1256],[5690]",
+    userRoleId: 2,
+    officeId: 4,
+  },
 ];
 
 async function createUsers() {
