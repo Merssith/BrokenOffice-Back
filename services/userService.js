@@ -99,3 +99,29 @@ exports.updateUserAvatar = async (id, avatar) => {
     throw Error("UPLOAD FAILED");
   }
 };
+
+exports.getAdminsGeoCords = async () => {
+  const admins = await User.findAll({ where: { userRoleId: 2 } });
+  let adminArray = [];
+  if (!admins) return adminArray;
+  for (let i = 0; i < admins.length; i++) {
+    let adminGeoCords = admins[i].dataValues.geoCords.split(",");
+    let admin = {
+      adminId: admins[i].dataValues.id,
+      lat: adminGeoCords[0].replace("[", "").replace("]", ""),
+      long: adminGeoCords[1].replace("[", "").replace("]", ""),
+    };
+    adminArray.push(admin);
+  }
+  return adminArray;
+};
+
+exports.getAssignedUser = async (id) => {
+  const user = await User.findByPk(id);
+  if (!user) throw 404;
+  return {
+    id: user.id,
+    fullName: user.fullName,
+    email: user.email,
+  };
+};

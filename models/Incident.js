@@ -8,7 +8,7 @@ Incident.init(
   {
     status: {
       type: Sequelize.STRING,
-      defaultValue: "Pending",
+      defaultValue: "PENDING",
     },
     geoCords: {
       type: Sequelize.STRING,
@@ -29,6 +29,10 @@ Incident.init(
     date: {
       type: Sequelize.DATEONLY,
       defaultValue: Sequelize.NOW,
+    },
+    assignedToUserId: {
+      type: Sequelize.INTEGER,
+      defaultValue: null,
     },
   },
   {
