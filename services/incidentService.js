@@ -28,6 +28,10 @@ exports.getByUserId = async (userId) => {
   return incidents;
 };
 
+exports.deleteIncident = (id) => {
+  return Incident.destroy({ where: { id } });
+};
+
 exports.getSearchedIncidents = async (filter) => {
   if (!isNumeric(filter)) {
     const results = await Incident.findAll({

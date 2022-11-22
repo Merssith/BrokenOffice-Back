@@ -14,6 +14,12 @@ Incident.init(
       type: Sequelize.STRING,
       allowNull: false,
     },
+    place: {
+      type: Sequelize.STRING,
+    },
+    subject: {
+      type: Sequelize.STRING(20),
+    },
     details: {
       type: Sequelize.TEXT,
     },

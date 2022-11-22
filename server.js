@@ -19,3 +19,4 @@ db.sync({ force: false })
     });
   })
   .catch(console.error);
+  
