@@ -8,7 +8,7 @@ exports.getAllOffices = async () => {
       },
     ],
   });
-  if (!offices) throw 404;
+  if (!offices.length) throw 404;
   return offices;
 };
 

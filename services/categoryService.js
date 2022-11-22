@@ -2,7 +2,7 @@ const Category = require("../models/Category");
 
 exports.getAllCategories = async () => {
   const categories = await Category.findAll();
-  if (!categories) throw 404;
+  if (!categories.length) throw 404;
   return categories;
 };
 

@@ -2,7 +2,7 @@ const UserRole = require("../models/UserRole");
 
 exports.getAllUserRole = async () => {
   const userRoles = await UserRole.findAll();
-  if (!userRoles) throw 404;
+  if (!userRoles.length) throw 404;
   return userRoles;
 };
 

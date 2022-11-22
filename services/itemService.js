@@ -8,7 +8,7 @@ exports.getAllItems = async () => {
       },
     ],
   });
-  if (!items) throw 404;
+  if (!items.length) throw 404;
   return items;
 };
 
