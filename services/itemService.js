@@ -41,15 +41,13 @@ exports.editItem = async (id, body) => {
   return item;
 };
 
-exports.getPredictions = (url) => {
-  return model
-    .classify({
+exports.getPredictions = async (url) => {
+  try {
+    const predictions = await model.classify({
       imageUrl: url,
-    })
-    .then((predictions) => {
-      return predictions;
-    })
-    .catch((e) => {
-      throw 500;
     });
+    return predictions;
+  } catch (e) {
+    throw 500;
+  }
 };
