@@ -110,8 +110,8 @@ exports.getAdminsGeoCords = async () => {
     let adminGeoCords = admins[i].dataValues.geoCords.split(",");
     let admin = {
       adminId: admins[i].dataValues.id,
-      lat: adminGeoCords[0].replace("[", "").replace("]", ""),
-      long: adminGeoCords[1].replace("[", "").replace("]", ""),
+      lat: adminGeoCords[0],
+      long: adminGeoCords[1],
     };
     adminArray.push(admin);
   }
