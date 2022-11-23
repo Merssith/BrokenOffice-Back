@@ -1,19 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const userRoleController = require("../controllers/userRoleController");
+const { validateAuth,validateAdmin,validateSuperAdmin } = require("../middlewares/auth");
 
+// GET ALL USER ROLE - ADMIN
+router.get("/all", validateAdmin,userRoleController.getAllUserRole)
 
-// GET ALL USER ROLE
-router.get("/all", userRoleController.getAllUserRole)
+// GET USER ROLE - SUPER ADMIN
+router.get("/:id", validateSuperAdmin,userRoleController.getUserRole)
 
-// GET USER ROLE 
-router.get("/:id", userRoleController.getUserRole)
+// PUT EDIT USER ROLE - SUPER ADMIN
+router.put("/update/:id", validateSuperAdmin,userRoleController.editUserRole);
 
-// PUT EDIT USER ROLE
-router.put("/update/:id", userRoleController.editUserRole);
-
-// POST NEW USER ROLE
-router.post("/", userRoleController.createUserRole);
+// POST NEW USER ROLE - SUPER ADMIN
+router.post("/", validateSuperAdmin,userRoleController.createUserRole);
 
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const incidentController = require("../controllers/incidentController");
-const { validateAuth } = require("../middlewares/auth");
+const { validateAuth,validateAdmin,validateSuperAdmin } = require("../middlewares/auth");
 
 // GET ALL INCIDENTS
 router.get("/all", incidentController.getAllIncidents);
