@@ -1,10 +1,4 @@
 const Item = require("../models/Item");
-const TeachableMachine = require("@sashido/teachablemachine-node");
-
-const model = new TeachableMachine({
-  modelUrl: "https://teachablemachine.withgoogle.com/models/JMnx6saZk/",
-});
-
 
 exports.getAllItems = async () => {
   const items = await Item.findAll({
@@ -45,19 +39,5 @@ exports.editItem = async (id, body) => {
   await item.update(body);
   return item;
 };
-
-
-// exports.getPredictions = (url) => {
-//   return model
-//   .classify({
-//     imageUrl: url,
-//   })
-//   .then((predictions) => {
-//     res.json(predictions);
-//   })
-//   .catch((e) => {
-//     res.status(500).send("Something went wrong!");
-//   });
-// };
 
 
