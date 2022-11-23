@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 module.exports = {
-    SECRET: process.env.SECRET || "BROKENOFFICE",
+    SECRET: process.env.SECRET,
   };
