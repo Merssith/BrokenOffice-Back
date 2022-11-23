@@ -86,8 +86,10 @@ exports.deleteUser = async (id) => {
 };
 
 exports.updateUserAvatar = async (id, avatar) => {
+  if (isNaN(id)) throw 400;
+  const user = await User.findByPk(id);
+  if (!user) throw 404;
   try {
-    const user = await User.findByPk(id);
     const uploadedAvatar = await cloudimage.v2.uploader.upload(avatar, {
       public_id: "bo_user_avatar_" + id,
     });
@@ -123,5 +125,20 @@ exports.getAssignedUser = async (id) => {
     id: user.id,
     fullName: user.fullName,
     email: user.email,
+  };
+};
+
+exports.getMe = async (id) => {
+  const user = await User.findByPk(id);
+  if (!user) throw 404;
+  return {
+    id: user.id,
+    name: user.name,
+    lastName: user.lastName,
+    fullName: user.fullName,
+    email: user.email,
+    telephone: user.telephone,
+    geoCords: user.geoCords,
+    avatar: user.avatar,
   };
 };
