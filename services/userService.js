@@ -140,5 +140,6 @@ exports.getMe = async (id) => {
     telephone: user.telephone,
     geoCords: user.geoCords,
     avatar: user.avatar,
+    userRoleId: user.userRoleId,
   };
 };
