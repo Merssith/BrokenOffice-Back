@@ -1,19 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const categoryController = require("../controllers/categoryController");
+const { validateAuth,validateAdmin,validateSuperAdmin } = require("../middlewares/auth");
 
+// GET ALL CATEGORIES - ADMIN
+router.get("/all", validateAdmin,categoryController.getAllCategories)
 
-// GET ALL CATEGORIES
-router.get("/all", categoryController.getAllCategories)
+// GET CATEGORY - ADMIN
+router.get("/:id", validateAdmin,categoryController.getCategory)
 
-// GET CATEGORY
-router.get("/:id", categoryController.getCategory)
+// PUT EDIT CATEGORY -  SUPER ADMIN
+router.put("/update/:id", validateSuperAdmin,categoryController.editCategory);
 
-// PUT EDIT CATEGORY
-router.put("/update/:id", categoryController.editCategory);
-
-// POST NEW CATEGORY
-router.post("/", categoryController.createCategory);
+// POST NEW CATEGORY - SUPER ADMIN
+router.post("/", validateSuperAdmin,categoryController.createCategory);
 
 
 module.exports = router;

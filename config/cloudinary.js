@@ -7,11 +7,6 @@ cloudinary.config({
   api_secret: process.env.API_SECRET_CLOUDINARY,
 });
 
-// cloudinary.config({
-//   cloud_name: "dsdiadotw",
-//   api_key: "296263448996691",
-//   api_secret: "IyFGX5zShzjTj3QURvMCtkYJuDs",
-// });
 
 const cloudimage = cloudinary;
 
