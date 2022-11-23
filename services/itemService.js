@@ -1,4 +1,5 @@
 const Item = require("../models/Item");
+const { model } = require("../config/teachableMachineModel");
 
 exports.getAllItems = async () => {
   const items = await Item.findAll({
@@ -26,7 +27,7 @@ exports.getItem = async (id) => {
 };
 
 exports.createItem = async (item) => {
-  if (Object.keys(item).length === 0) return 400;
+  if (Object.keys(item).length === 0) throw 400;
   const newItem = await Item.create(item);
   return newItem;
 };
@@ -35,9 +36,20 @@ exports.editItem = async (id, body) => {
   if (isNaN(id)) throw 400;
   const item = await Item.findByPk(id);
   if (!item) throw 404;
-  if (Object.keys(body).length === 0) return 400;
+  if (Object.keys(body).length === 0) throw 400;
   await item.update(body);
   return item;
 };
 
-
+exports.getPredictions = (url) => {
+  return model
+    .classify({
+      imageUrl: url,
+    })
+    .then((predictions) => {
+      return predictions;
+    })
+    .catch((e) => {
+      throw 500;
+    });
+};
