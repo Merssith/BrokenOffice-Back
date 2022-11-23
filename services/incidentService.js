@@ -99,8 +99,8 @@ exports.assignedToMe = async (userId) => {
 
 async function autoAssignAnAdmin(incident) {
   const incidentGeoCords = incident.geoCords.split(",");
-  const incidentLat = incidentGeoCords[0].replace("[", "").replace("]", "");
-  const incidentLong = incidentGeoCords[1].replace("[", "").replace("]", "");
+  const incidentLat = incidentGeoCords[0];
+  const incidentLong = incidentGeoCords[1];
   const adminArray = await userService.getAdminsGeoCords();
   if (!adminArray.length) return await incident.update({ assignedToUserId: 0 });
   var closest = adminArray.reduce(function (prev, curr) {
