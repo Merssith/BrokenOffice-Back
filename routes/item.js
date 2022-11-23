@@ -9,6 +9,10 @@ router.get("/all", itemController.getAllItems)
 // GET ITEM
 router.get("/:id", itemController.getItem)
 
+// POST ITEM AND GET PREDICTIONS FROM MODEL
+
+router.post("/image/classify", itemController.getPredictions)
+
 // PUT EDIT ITEM
 router.put("/update/:id", itemController.editItem);
 
