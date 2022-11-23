@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const incidentController = require("../controllers/incidentController");
-const { validateAuth } = require("../middlewares/auth");
+const { validateAuth,validateAdmin,validateSuperAdmin } = require("../middlewares/auth");
 
-// GET ALL INCIDENTS
+// GET ALL INCIDENTS 
 router.get("/all", incidentController.getAllIncidents);
 
 // GET SEARCH INCIDENT BY ID / STATUS
@@ -20,8 +20,5 @@ router.get("/byUser/:userId", incidentController.getByUserId);
 
 // DELETE INCIDENT BY ID
 router.delete("/delete/:id", incidentController.deleteIncident);
-
-//GET INCIDENTS ASSIGNED TO ME - ADMIN
-router.get("/assignedToMe", validateAuth, incidentController.assignedToMe);
 
 module.exports = router;

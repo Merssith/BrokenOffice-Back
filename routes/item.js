@@ -1,23 +1,20 @@
 const express = require("express");
 const router = express.Router();
 const itemController = require("../controllers/itemController");
+const { validateAuth,validateAdmin,validateSuperAdmin } = require("../middlewares/auth");
 
 
-// GET ALL ITEMS
-router.get("/all", itemController.getAllItems)
+// GET ALL ITEMS - ADMIN
+router.get("/all", validateAdmin,itemController.getAllItems)
 
-// GET ITEM
-router.get("/:id", itemController.getItem)
+// GET ITEM - ADMIN
+router.get("/:id", validateAdmin,itemController.getItem)
 
-// POST ITEM AND GET PREDICTIONS FROM MODEL
+// PUT EDIT ITEM - ADMIN
+router.put("/update/:id", validateAdmin,itemController.editItem);
 
-router.post("/image/classify", itemController.getPredictions)
-
-// PUT EDIT ITEM
-router.put("/update/:id", itemController.editItem);
-
-// POST NEW ITEM
-router.post("/", itemController.createItem);
+// POST NEW ITEM - ADMIN
+router.post("/", validateAdmin,itemController.createItem);
 
 
 

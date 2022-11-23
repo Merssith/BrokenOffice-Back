@@ -1,14 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const formData = require("express-form-data");
-const { validateAuth } = require("../middlewares/auth");
+const { validateAuth,validateAdmin,validateSuperAdmin } = require("../middlewares/auth");
 const userController = require("../controllers/userController");
 
-// GET ALL USERS
-router.get("/all", userController.getAllUsers);
+ 
+// GET ALL USERS - ADMIN
+router.get("/all", validateAdmin,userController.getAllUsers);
 
-// GET USER BY ID
-router.get("/search/:id", userController.getUser);
+// GET USER BY ID - ADMIN
+router.get("/search/:id", validateAdmin,userController.getUser);
 
 // POST NEW USER
 router.post("/", userController.createUser);
@@ -25,8 +26,8 @@ router.post("/logout", userController.logoutUser);
 // EDIT USER
 router.put("/update/:id", userController.editUser);
 
-// DELETE USER
-router.delete("/delete/:id", userController.deleteUser);
+// DELETE USER - ADMIN
+router.delete("/delete/:id", validateAdmin,userController.deleteUser);
 
 //UPDATE USER AVATAR
 router.put("/avatar/:id", formData.parse(), userController.updateUserAvatar);
