@@ -2,6 +2,8 @@ const { Incident } = require("../models/");
 const userService = require("./userService");
 const sequelize = require("sequelize");
 const Op = sequelize.Op;
+const { cloudimage } = require("../config/cloudinary");
+const { generateUUID } = require("../utils/functions");
 
 exports.getAllIncidents = async () => {
   const incidents = await Incident.findAll({
@@ -18,7 +20,21 @@ exports.getAllIncidents = async () => {
 
 exports.createIncident = async (incident) => {
   if (Object.keys(incident).length === 0) return 400;
-  const newIncident = await Incident.create(incident);
+  if (incident.photo === "") {
+    uploadedPhoto = null;
+  } else {
+    uploadedPhoto = await uploadIncidentPhoto(incident.photo);
+  }
+  const completeIncident = {
+    status: incident.status,
+    place: incident.place,
+    subject: incident.subject,
+    geoCords: incident.geoCords,
+    details: incident.details,
+    photo: uploadedPhoto,
+    userId: incident.userId,
+  };
+  const newIncident = await Incident.create(completeIncident);
   await autoAssignAnAdmin(newIncident);
   return newIncident;
 };
@@ -121,5 +137,22 @@ async function getAssignedUser(incidentArray) {
       let assignedUser = await userService.getAssignedUser(userId);
       incidentArray[i].dataValues.assignedToUser = assignedUser;
     }
+  }
+}
+
+async function uploadIncidentPhoto(photo) {
+  const photoUUID = generateUUID();
+  try {
+    const uploadedPhoto = await cloudimage.v2.uploader.upload(photo, {
+      overwrite: true,
+      invalidate: true,
+      width: 810,
+      height: 456,
+      crop: "fill",
+      public_id: "incident-photo-" + photoUUID,
+    });
+    return uploadedPhoto.secure_url;
+  } catch {
+    throw Error("UPLOAD FAILED");
   }
 }
