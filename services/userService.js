@@ -65,6 +65,7 @@ exports.loginUser = async (email, password) => {
     email: user.email,
     telephone: user.telephone,
     geoCords: user.geoCords,
+    place: user.place,
     avatar: user.avatar,
   };
 };
@@ -139,6 +140,7 @@ exports.getMe = async (id) => {
     email: user.email,
     telephone: user.telephone,
     geoCords: user.geoCords,
+    place: user.place,
     avatar: user.avatar,
     userRoleId: user.userRoleId,
   };
