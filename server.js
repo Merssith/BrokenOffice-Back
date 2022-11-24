@@ -6,6 +6,8 @@ const cors = require("cors");
 const db = require("./config/db");
 const routes = require("./routes");
 
+app.use(express.json({ limit: "10mb", extended: true }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(cookieParser());
 app.use(express.json());
@@ -19,4 +21,3 @@ db.sync({ force: false })
     });
   })
   .catch(console.error);
-  
