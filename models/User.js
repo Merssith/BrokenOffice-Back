@@ -86,5 +86,4 @@ User.UserRole = User.belongsTo(UserRole);
 User.Office = User.belongsTo(Office);
 User.Item = User.hasMany(Item);
 User.Incident = User.hasMany(Incident);
-
 module.exports = User;
