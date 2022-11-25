@@ -1,9 +1,8 @@
 const { Incident } = require("../models/");
 const userService = require("./userService");
+const imageService = require("./imageService");
 const sequelize = require("sequelize");
 const Op = sequelize.Op;
-const { cloudimage } = require("../config/cloudinary");
-const { generateUUID } = require("../utils/functions");
 
 exports.getAllIncidents = async () => {
   const incidents = await Incident.findAll({
@@ -146,18 +145,10 @@ async function getAssignedUser(incidentArray) {
 }
 
 async function uploadIncidentPhoto(photo) {
-  const photoUUID = generateUUID();
   try {
-    const uploadedPhoto = await cloudimage.v2.uploader.upload(photo, {
-      overwrite: true,
-      invalidate: true,
-      width: 810,
-      height: 456,
-      crop: "fill",
-      public_id: "incident-photo-" + photoUUID,
-    });
-    return uploadedPhoto.secure_url;
+    const uploadedPhoto = await imageService.uploadIncidentPhoto(photo);
+    return uploadedPhoto;
   } catch {
-    throw Error("UPLOAD FAILED");
+    throw 400;
   }
 }
