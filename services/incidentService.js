@@ -20,10 +20,13 @@ exports.getAllIncidents = async () => {
 
 exports.createIncident = async (incident) => {
   if (Object.keys(incident).length === 0) return 400;
-  if (incident.photo === "") {
-    uploadedPhoto = null;
-  } else {
+  if (incident.photo.length) {
     uploadedPhoto = await uploadIncidentPhoto(incident.photo);
+  } else {
+    uploadedPhoto = null;
+  }
+  if (incident.geoCords === null) {
+    incident.geoCords = "";
   }
   const completeIncident = {
     status: incident.status,
@@ -35,7 +38,9 @@ exports.createIncident = async (incident) => {
     userId: incident.userId,
   };
   const newIncident = await Incident.create(completeIncident);
-  await autoAssignAnAdmin(newIncident);
+  if (incident.geoCords.length) {
+    await autoAssignAnAdmin(newIncident);
+  }
   return newIncident;
 };
 
