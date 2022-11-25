@@ -14,6 +14,7 @@ exports.getAllIncidents = async () => {
   });
   if (!incidents.length) throw 404;
   await getAssignedUser(incidents);
+  await getUser(incidents);
   return incidents;
 };
 
@@ -57,6 +58,7 @@ exports.getByUserId = async (userId) => {
   const incidents = await Incident.findAll({ where: { userId: userId } });
   if (!incidents.length) throw 404;
   await getAssignedUser(incidents);
+  await getUser(incidents);
   return incidents;
 };
 
@@ -82,6 +84,7 @@ exports.getSearchedIncidents = async (filter) => {
     });
     if (!results.length) throw 404;
     await getAssignedUser(results);
+    await getUser(results);
     return results;
   } else {
     const results = await Incident.findAll({
@@ -96,6 +99,7 @@ exports.getSearchedIncidents = async (filter) => {
     });
     if (!results.length) throw 404;
     await getAssignedUser(results);
+    await getUser(results);
     return results;
   }
 };
@@ -112,6 +116,7 @@ exports.assignedToMe = async (userId) => {
     ],
   });
   if (!incidents) throw 404;
+  await getUser(incidents);
   return incidents;
 };
 
@@ -140,6 +145,16 @@ async function getAssignedUser(incidentArray) {
     if (userId > 0) {
       let assignedUser = await userService.getAssignedUser(userId);
       incidentArray[i].dataValues.assignedToUser = assignedUser;
+    }
+  }
+}
+
+async function getUser(incidentArray) {
+  for (let i = 0; i < incidentArray.length; i++) {
+    let userId = incidentArray[i].userId;
+    if (userId > 0) {
+      let user = await userService.getMe(userId);
+      incidentArray[i].dataValues.user = user;
     }
   }
 }
