@@ -75,7 +75,12 @@ exports.editUser = async (id, body) => {
   const user = await User.findByPk(id);
   if (!user) throw 404;
   if (Object.keys(body).length === 0) return 400;
-  await user.update(body);
+  const newUser = {
+    name: body.name,
+    lastName: body.lastName,
+    telephone: body.telephone,
+  };
+  await user.update(newUser);
   return user;
 };
 
