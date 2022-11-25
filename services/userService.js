@@ -1,5 +1,5 @@
 const { User } = require("../models");
-const { cloudimage } = require("../config/cloudinary");
+const imageService = require("./imageService");
 
 exports.getAllUsers = async () => {
   const users = await User.findAll({
@@ -98,15 +98,13 @@ exports.updateUserAvatar = async (id, avatar) => {
   const user = await User.findByPk(id);
   if (!user) throw 404;
   try {
-    const uploadedAvatar = await cloudimage.v2.uploader.upload(avatar, {
-      public_id: "bo_user_avatar_" + id,
-    });
+    const uploadedAvatar = await imageService.uploadAvatar(avatar);
     const updatedUser = await user.update({
-      avatar: uploadedAvatar.secure_url,
+      avatar: uploadedAvatar,
     });
     return updatedUser;
   } catch {
-    throw Error("UPLOAD FAILED");
+    throw 400;
   }
 };
 
