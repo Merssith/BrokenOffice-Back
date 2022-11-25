@@ -6,6 +6,7 @@ exports.uploadAvatar = async (avatar) => {
   try {
     const uploadedAvatar = await cloudimage.v2.uploader.upload(avatar, {
       public_id: "bo_ua_" + avatarUUID,
+      folder: "/avatars",
     });
     return uploadedAvatar.secure_url;
   } catch {
@@ -17,6 +18,7 @@ exports.uploadIncidentPhoto = async (photo) => {
   const photoUUID = generateUUID();
   try {
     const uploadedPhoto = await cloudimage.v2.uploader.upload(photo, {
+      folder: "/incidents",
       overwrite: true,
       invalidate: true,
       width: 810,
