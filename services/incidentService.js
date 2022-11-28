@@ -77,7 +77,7 @@ exports.deleteIncident = async (id) => {
   return Incident.destroy({ where: { id } });
 };
 
-exports.getSearchedIncidents = async (filter) => {
+exports.getSearchedIncidents = async (filter, userId) => {
   if (!filter) throw 400;
   if (isNaN(filter)) {
     const results = await Incident.findAll({
@@ -106,6 +106,8 @@ exports.getSearchedIncidents = async (filter) => {
       ],
     });
     if (!results.length) throw 404;
+    if(results[0].dataValues.userId !== userId) throw 401
+
     await getAssignedUser(results);
     await getUser(results);
     return results;
