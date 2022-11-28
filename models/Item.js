@@ -6,17 +6,22 @@ class Item extends Sequelize.Model {}
 
 Item.init(
   {
-    name: {
+    device: {
       type: Sequelize.STRING,
+      allowNull: false,
+    },
+    brand: {
+      type: Sequelize.TEXT,
       allowNull: false,
     },
     model: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    brand: {
-      type: Sequelize.TEXT,
-    },
+    color: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    }
   },
   {
     sequelize: db,

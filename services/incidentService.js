@@ -4,6 +4,9 @@ const userService = require("./userService");
 const imageService = require("./imageService");
 const sequelize = require("sequelize");
 const Op = sequelize.Op;
+const { cloudimage } = require("../config/cloudinary");
+const { generateUUID } = require("../utils/functions");
+const itemService = require("./itemService.js");
 
 exports.getAllIncidents = async () => {
   const incidents = await Incident.findAll({
@@ -29,6 +32,9 @@ exports.createIncident = async (incident) => {
   if (incident.geoCords === null) {
     incident.geoCords = "";
   }
+
+  const item = await predictItem(uploadedPhoto, incident.userId);
+
   const completeIncident = {
     status: incident.status,
     place: incident.place,
@@ -36,6 +42,7 @@ exports.createIncident = async (incident) => {
     geoCords: incident.geoCords,
     details: incident.details,
     photo: uploadedPhoto,
+    itemId: item,
     userId: incident.userId,
   };
   const newIncident = await Incident.create(completeIncident);
@@ -187,5 +194,37 @@ async function uploadIncidentPhoto(photo) {
     return uploadedPhoto;
   } catch {
     throw 400;
+  }
+}
+
+async function predictItem(photo, user) {
+  const predictedItems = await itemService.getPredictions(photo);
+  const predictedItem = predictedItems[0].class.split(" ");
+  const device = predictedItem[0];
+  const brand = predictedItem[1];
+  const model = predictedItem[2];
+  const color = predictedItem[3];
+  const userId = user;
+  const userItems = await itemService.getItemsbyUserId(userId);
+  if (!userItems) return null;
+
+  const result = userItems.filter(
+    (item) =>
+      item.dataValues.device === device &&
+      item.dataValues.brand === brand &&
+      item.dataValues.model === model &&
+      item.dataValues.color === color
+  );
+
+  const alternativeResult = userItems.filter(
+    (item) => item.dataValues.device === device
+  );
+
+  if (result.length) {
+    return result[0].dataValues.id;
+  } else if (alternativeResult.length) {
+    return alternativeResult[0].dataValues.id;
+  } else {
+    return null;
   }
 }
