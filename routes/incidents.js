@@ -1,7 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const incidentController = require("../controllers/incidentController");
-const { validateAuth,validateAdmin,validateSuperAdmin } = require("../middlewares/auth");
+const {
+  validateAuth,
+  validateAdmin,
+  validateSuperAdmin,
+} = require("../middlewares/auth");
 
 // GET ALL INCIDENTS
 router.get("/all", incidentController.getAllIncidents);
@@ -23,5 +27,8 @@ router.delete("/delete/:id", incidentController.deleteIncident);
 
 //GET INCIDENTS ASSIGNED TO ME - ADMIN
 router.get("/assignedToMe", validateAuth, incidentController.assignedToMe);
+
+//ADD NOTE TO INICIDENT
+router.post("/note/:id", validateAuth, incidentController.noteInIncident);
 
 module.exports = router;

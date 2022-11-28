@@ -57,3 +57,13 @@ exports.assignedToMe = (req, res) => {
     .then((incidents) => res.status(200).send(incidents))
     .catch((err) => res.status(500).send(err));
 };
+
+exports.noteInIncident = (req, res) => {
+  const incidentId = req.params.id;
+  const note = req.body.note;
+  const userId = req.user.id;
+  incidentService
+    .noteInIncident(incidentId, note, userId)
+    .then((incident) => res.status(200).send(incident))
+    .catch((err) => res.status(500).send(err));
+};
