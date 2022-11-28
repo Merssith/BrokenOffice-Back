@@ -41,11 +41,12 @@ exports.deleteIncident = (req, res) => {
 
 exports.getSearchedIncidents = (req, res) => {
   const { status, id } = req.query;
+  const userId = req.user.id
   let filter = null;
   if (status) filter = status;
   if (id) filter = id;
   incidentService
-    .getSearchedIncidents(filter)
+    .getSearchedIncidents(filter, userId)
     .then((searchedIncident) => res.status(200).send(searchedIncident))
     .catch((err) => res.status(500).send(err));
 };
