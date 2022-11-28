@@ -1,4 +1,5 @@
 const { Incident } = require("../models/");
+const { getDate } = require("../utils/functions");
 const userService = require("./userService");
 const imageService = require("./imageService");
 const sequelize = require("sequelize");
@@ -118,6 +119,27 @@ exports.assignedToMe = async (userId) => {
   if (!incidents) throw 404;
   await getUser(incidents);
   return incidents;
+};
+
+exports.noteInIncident = async (id, note, user) => {
+  if (isNaN(id)) throw 400;
+  const incident = await Incident.findByPk(id);
+  if (!incident) throw 404;
+  const checkNotesInIncident = incident.notes;
+  const userData = await userService.getMe(user);
+  let insertedNote = {
+    comment: note,
+    userName: userData.fullName,
+    date: getDate(),
+  };
+  if (checkNotesInIncident != null) {
+    const notesInIncident = [...incident.notes];
+    notesInIncident.push(insertedNote);
+    await incident.update({ notes: notesInIncident });
+  } else {
+    await incident.update({ notes: [insertedNote] });
+  }
+  return incident;
 };
 
 // ADITIONAL SERVICE FUNCTIONS

@@ -17,4 +17,22 @@ function generateUUID() {
     return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
   });
 }
-module.exports = { generateUUID };
+
+function getDate() {
+  var currentdate = new Date();
+  var datetime =
+    currentdate.getDate() +
+    "/" +
+    (currentdate.getMonth() + 1) +
+    "/" +
+    currentdate.getFullYear() +
+    " @ " +
+    currentdate.getHours() +
+    ":" +
+    currentdate.getMinutes() +
+    ":" +
+    currentdate.getSeconds();
+  return datetime;
+}
+
+module.exports = { generateUUID, getDate };

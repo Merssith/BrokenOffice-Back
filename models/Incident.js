@@ -34,6 +34,10 @@ Incident.init(
       type: Sequelize.INTEGER,
       defaultValue: null,
     },
+    notes: {
+      type: Sequelize.ARRAY(Sequelize.JSON),
+      defaultValue: null,
+    },
   },
   {
     sequelize: db,
