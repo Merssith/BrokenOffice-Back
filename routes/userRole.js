@@ -13,7 +13,7 @@ router.get("/:id", validateSuperAdmin,userRoleController.getUserRole)
 router.put("/update/:id", validateSuperAdmin,userRoleController.editUserRole);
 
 // POST NEW USER ROLE - SUPER ADMIN
-router.post("/", validateSuperAdmin,userRoleController.createUserRole);
+router.post("/", userRoleController.createUserRole);
 
 
 module.exports = router;

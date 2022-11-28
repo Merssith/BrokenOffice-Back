@@ -23,6 +23,15 @@ exports.createItem = (req, res) => {
     .catch((err) => res.status(500).send(err));
 };
 
+exports.deleteItem = (req, res) => {
+  const id = req.params.id;
+  itemService
+    .deleteItem(id)
+    .then(() => res.sendStatus(202))
+    .catch((err) => res.status(500).send(err));
+};
+
+
 exports.editItem = (req, res) => {
   const id = req.params.id;
   itemService

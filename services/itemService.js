@@ -13,6 +13,19 @@ exports.getAllItems = async () => {
   return items;
 };
 
+exports.getItemsbyUserId = async (userId) => {
+  const items = await Item.findAll({
+    where: [
+      {
+        userId,
+      },
+    ],
+  });
+  if (!items.length) return null
+  return items;
+};
+
+
 exports.getItem = async (id) => {
   if (isNaN(id)) throw 400;
   const item = await Item.findByPk(id, {
@@ -30,6 +43,13 @@ exports.createItem = async (item) => {
   if (Object.keys(item).length === 0) throw 400;
   const newItem = await Item.create(item);
   return newItem;
+};
+
+exports.deleteItem = async (id) => {
+  if (isNaN(id)) throw 400;
+  const item = await Item.findByPk(id);
+  if (!item) throw 404;
+  return Item.destroy({ where: { id } });
 };
 
 exports.editItem = async (id, body) => {

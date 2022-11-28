@@ -18,6 +18,9 @@ router.put("/update/:id", validateAdmin,itemController.editItem);
 // POST NEW ITEM - ADMIN
 router.post("/", validateAdmin,itemController.createItem);
 
+// DELETE ITEM BY ID
+router.delete("/delete/:id", itemController.deleteItem);
+
 
 
 module.exports = router;
