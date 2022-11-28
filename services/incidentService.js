@@ -1,5 +1,7 @@
 const { Incident } = require("../models/");
+const { getDate } = require("../utils/functions");
 const userService = require("./userService");
+const imageService = require("./imageService");
 const sequelize = require("sequelize");
 const Op = sequelize.Op;
 const { cloudimage } = require("../config/cloudinary");
@@ -16,6 +18,7 @@ exports.getAllIncidents = async () => {
   });
   if (!incidents.length) throw 404;
   await getAssignedUser(incidents);
+  await getUser(incidents);
   return incidents;
 };
 
@@ -63,6 +66,7 @@ exports.getByUserId = async (userId) => {
   const incidents = await Incident.findAll({ where: { userId: userId } });
   if (!incidents.length) throw 404;
   await getAssignedUser(incidents);
+  await getUser(incidents);
   return incidents;
 };
 
@@ -88,6 +92,7 @@ exports.getSearchedIncidents = async (filter) => {
     });
     if (!results.length) throw 404;
     await getAssignedUser(results);
+    await getUser(results);
     return results;
   } else {
     const results = await Incident.findAll({
@@ -102,6 +107,7 @@ exports.getSearchedIncidents = async (filter) => {
     });
     if (!results.length) throw 404;
     await getAssignedUser(results);
+    await getUser(results);
     return results;
   }
 };
@@ -118,7 +124,29 @@ exports.assignedToMe = async (userId) => {
     ],
   });
   if (!incidents) throw 404;
+  await getUser(incidents);
   return incidents;
+};
+
+exports.noteInIncident = async (id, note, user) => {
+  if (isNaN(id)) throw 400;
+  const incident = await Incident.findByPk(id);
+  if (!incident) throw 404;
+  const checkNotesInIncident = incident.notes;
+  const userData = await userService.getMe(user);
+  let insertedNote = {
+    comment: note,
+    userName: userData.fullName,
+    date: getDate(),
+  };
+  if (checkNotesInIncident != null) {
+    const notesInIncident = [...incident.notes];
+    notesInIncident.push(insertedNote);
+    await incident.update({ notes: notesInIncident });
+  } else {
+    await incident.update({ notes: [insertedNote] });
+  }
+  return incident;
 };
 
 // ADITIONAL SERVICE FUNCTIONS
@@ -150,20 +178,22 @@ async function getAssignedUser(incidentArray) {
   }
 }
 
+async function getUser(incidentArray) {
+  for (let i = 0; i < incidentArray.length; i++) {
+    let userId = incidentArray[i].userId;
+    if (userId > 0) {
+      let user = await userService.getMe(userId);
+      incidentArray[i].dataValues.user = user;
+    }
+  }
+}
+
 async function uploadIncidentPhoto(photo) {
-  const photoUUID = generateUUID();
   try {
-    const uploadedPhoto = await cloudimage.v2.uploader.upload(photo, {
-      overwrite: true,
-      invalidate: true,
-      width: 810,
-      height: 456,
-      crop: "fill",
-      public_id: "incident-photo-" + photoUUID,
-    });
-    return uploadedPhoto.secure_url;
+    const uploadedPhoto = await imageService.uploadIncidentPhoto(photo);
+    return uploadedPhoto;
   } catch {
-    throw Error("UPLOAD FAILED");
+    throw 400;
   }
 }
 
