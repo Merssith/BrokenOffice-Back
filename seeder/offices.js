@@ -2,6 +2,10 @@ const officesService = require("../services/officesService");
 
 const offices = [
   {
+    name: "Unassigned Office",
+    geoCords: "0,0",
+  },
+  {
     name: "Tandil",
     geoCords: "-37.3278607,-59.1338698",
   },
