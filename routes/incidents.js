@@ -31,4 +31,7 @@ router.get("/assignedToMe", validateAuth, incidentController.assignedToMe);
 //ADD NOTE TO INICIDENT
 router.post("/note/:id", validateAuth, incidentController.noteInIncident);
 
+//SHARE AN INICIDENT
+router.post("/share/:id", incidentController.shareIncident);
+
 module.exports = router;

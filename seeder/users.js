@@ -4,7 +4,7 @@ const users = [
   {
     name: "Juan Carlos",
     lastName: "Admin Supremo",
-    email: "admin@globant.com",
+    email: "admin@1.com",
     password: "HolaHola2022!",
     telephone: 7654321,
     geoCords: "34234324,234234234",
@@ -14,7 +14,7 @@ const users = [
   {
     name: "Juana",
     lastName: "Perez",
-    email: "juana@globant.com",
+    email: "juana@1.com",
     password: "HolaHola2022!",
     telephone: 1234567,
     geoCords: "151515151,515151212",
@@ -24,7 +24,7 @@ const users = [
   {
     name: "Nicolas",
     lastName: "Gomez",
-    email: "nico@globant.com",
+    email: "nico@1.com",
     password: "HolaHola2022!",
     telephone: 6743345,
     geoCords: "151515151,515151212",
@@ -34,7 +34,7 @@ const users = [
   {
     name: "Mabel",
     lastName: "Lechuga",
-    email: "mabel@globant.com",
+    email: "mabel@1.com",
     password: "HolaHola2022!",
     telephone: 75345,
     geoCords: "151515151,515151212",
@@ -44,7 +44,7 @@ const users = [
   {
     name: "Maribel",
     lastName: "Navarro",
-    email: "maribel@globant.com",
+    email: "maribel@1.com",
     password: "HolaHola2022!",
     telephone: 1234567,
     geoCords: "1234,5678",
@@ -54,7 +54,7 @@ const users = [
   {
     name: "Susana",
     lastName: "Gimenez",
-    email: "lasugimenez@globant.com",
+    email: "susana@1.com",
     password: "HolaHola2022!",
     telephone: 1234567,
     geoCords: "1256,5690",
