@@ -1,4 +1,5 @@
 const incidentService = require("../services/incidentService.js");
+const emailService = require("../services/emailService");
 
 exports.getAllIncidents = (req, res) => {
   incidentService
@@ -11,7 +12,11 @@ exports.createIncident = (req, res) => {
   const incident = req.body;
   incidentService
     .createIncident(incident)
-    .then((newIncident) => res.status(201).send(newIncident))
+    .then((newIncident) => {
+      emailService.sendNewIncidentEmail(newIncident);
+      emailService.sendIncidentAssignedEmail(newIncident);
+      res.status(201).send(newIncident);
+    })
     .catch((err) => res.status(500).send(err));
 };
 
@@ -67,6 +72,21 @@ exports.noteInIncident = (req, res) => {
   const userId = req.user.id;
   incidentService
     .noteInIncident(incidentId, note, userId)
-    .then((incident) => res.status(200).send(incident))
+    .then((incident) => {
+      emailService.checkSendIncidentNewReplyEmail(incident, userId);
+      res.status(200).send(incident);
+    })
+    .catch((err) => res.status(500).send(err));
+};
+
+exports.shareIncident = (req, res) => {
+  const incidentId = req.params.id;
+  const email = req.body.email;
+  incidentService
+    .getSearchedIncidents(incidentId)
+    .then((incident) => {
+      emailService.sendIncidentShareEmail(incident, email);
+      res.sendStatus(200);
+    })
     .catch((err) => res.status(500).send(err));
 };
