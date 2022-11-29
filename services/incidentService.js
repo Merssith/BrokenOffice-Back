@@ -4,8 +4,6 @@ const userService = require("./userService");
 const imageService = require("./imageService");
 const sequelize = require("sequelize");
 const Op = sequelize.Op;
-const { cloudimage } = require("../config/cloudinary");
-const { generateUUID } = require("../utils/functions");
 const itemService = require("./itemService.js");
 
 exports.getAllIncidents = async () => {
@@ -61,13 +59,26 @@ exports.editIncident = async (id, body) => {
   return incident;
 };
 
-exports.getByUserId = async (userId) => {
+exports.getByUserId = async (userId, page) => {
   if (isNaN(userId)) throw 400;
-  const incidents = await Incident.findAll({ where: { userId: userId } });
+ 
+  let pagina = page;
+  pagina >= 1 ? (pagina -= 1) : null;
+
+  const incidentsRequest = await Incident.findAndCountAll({
+    where: { userId },
+    limit: 8,
+    offset: page ? pagina * 8 : 0,
+  });
+ 
+  const { totalIncidents, incidents, totalPages, currentPage } = getPagingData(
+    incidentsRequest,
+    page
+  );
   if (!incidents.length) throw 404;
-  await getAssignedUser(incidents);
-  await getUser(incidents);
-  return incidents;
+  await getAssignedUser(incidentsRequest.rows);
+  await getUser(incidentsRequest.rows);
+  return { totalIncidents, incidents, totalPages, currentPage };
 };
 
 exports.deleteIncident = async (id) => {
@@ -230,3 +241,10 @@ async function predictItem(photo, user) {
     return null;
   }
 }
+
+const getPagingData = (data, page) => {
+  const { count: totalIncidents, rows: incidents } = data;
+  const currentPage = page ? page : 1;
+  const totalPages = Math.ceil(totalIncidents / 8);
+  return { totalIncidents, incidents, totalPages, currentPage };
+};
