@@ -25,8 +25,9 @@ exports.editIncident = (req, res) => {
 
 exports.getByUserId = (req, res) => {
   const userId = req.params.userId;
+  let { page } = req.query;
   incidentService
-    .getByUserId(userId)
+    .getByUserId(userId, page)
     .then((incidents) => res.status(200).send(incidents))
     .catch((err) => res.status(500).send(err));
 };
