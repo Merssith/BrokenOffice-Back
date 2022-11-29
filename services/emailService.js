@@ -38,7 +38,13 @@ exports.sendNewIncidentEmail = async (incident) => {
     incidentDetails.assignedToUserId
   );
   const user = await userService.getMe(incidentDetails.userId);
-  //const item = await itemService.getItem(incidentDetails.itemId);
+  let item = "";
+  if (incidentDetails.itemId != null) {
+    const searchedItem = await itemService.getItem(incidentDetails.itemId);
+    item = searchedItem.device;
+  } else {
+    item = "Unrecognized device";
+  }
 
   readHTMLFile(
     __dirname + "/../utils/emailTemplates/incidentNew.html",
@@ -56,7 +62,7 @@ exports.sendNewIncidentEmail = async (incident) => {
         subject: incidentDetails.subject,
         details: incidentDetails.details,
         photo: incidentDetails.photo,
-        //device: item.device,
+        device: item,
         assigned: assignedToUser.fullName,
       };
       let htmlToSend = template(replacements);
@@ -81,8 +87,13 @@ exports.sendIncidentShareEmail = async (incident, email) => {
     incidentDetails.assignedToUserId
   );
   const userTicketOwner = await userService.getMe(incidentDetails.userId);
-  //const item = await itemService.getItem(incidentDetails.itemId);
-
+  let item = "";
+  if (incidentDetails.itemId != null) {
+    const searchedItem = await itemService.getItem(incidentDetails.itemId);
+    item = searchedItem.device;
+  } else {
+    item = "Unrecognized device";
+  }
   readHTMLFile(
     __dirname + "/../utils/emailTemplates/incidentShare.html",
     function (err, html) {
@@ -99,7 +110,7 @@ exports.sendIncidentShareEmail = async (incident, email) => {
         subject: incidentDetails.subject,
         details: incidentDetails.details,
         photo: incidentDetails.photo,
-        //device: item.device,
+        device: item,
         assigned: assignedToUser.fullName,
       };
       let htmlToSend = template(replacements);
@@ -175,7 +186,13 @@ exports.sendIncidentAssignedEmail = async (incident) => {
     incidentDetails.assignedToUserId
   );
   const user = await userService.getMe(incidentDetails.userId);
-  //const item = await itemService.getItem(incidentDetails.itemId);
+  let item = "";
+  if (incidentDetails.itemId != null) {
+    const searchedItem = await itemService.getItem(incidentDetails.itemId);
+    item = searchedItem.device;
+  } else {
+    item = "Unrecognized device";
+  }
 
   readHTMLFile(
     __dirname + "/../utils/emailTemplates/incidentAssigned.html",
@@ -193,7 +210,7 @@ exports.sendIncidentAssignedEmail = async (incident) => {
         subject: incidentDetails.subject,
         details: incidentDetails.details,
         photo: incidentDetails.photo,
-        //device: item.device,
+        device: item,
         assigned: assignedToUser.fullName,
       };
       let htmlToSend = template(replacements);

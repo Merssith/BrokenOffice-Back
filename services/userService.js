@@ -46,8 +46,21 @@ exports.getUser = async (id) => {
 
 exports.createUser = async (user) => {
   if (Object.keys(user).length === 0) return 400;
-  const newUser = await User.create(user);
-  return newUser;
+  let newUser = {};
+  if (!user.userRoleId) {
+    newUser = {
+      name: user.name,
+      lastName: user.lastName,
+      email: user.email,
+      password: user.password,
+      userRoleId: 3,
+      officeId: 1,
+    };
+    createdUser = await User.create(newUser);
+  } else {
+    createdUser = await User.create(user);
+  }
+  return createdUser;
 };
 
 exports.loginUser = async (email, password) => {
