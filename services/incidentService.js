@@ -27,7 +27,7 @@ exports.createIncident = async (incident) => {
   } else {
     uploadedPhoto = null;
   }
-  if (incident.geoCords === null) {
+  if (Object.keys(incident.geoCords).length === 0) {
     incident.geoCords = "";
   }
 
@@ -44,7 +44,7 @@ exports.createIncident = async (incident) => {
     userId: incident.userId,
   };
   const newIncident = await Incident.create(completeIncident);
-  if (incident.geoCords.length) {
+  if (Object.keys(incident.geoCords).length) {
     await autoAssignAnAdmin(newIncident);
   }
   return newIncident;
@@ -61,7 +61,7 @@ exports.editIncident = async (id, body) => {
 
 exports.getByUserId = async (userId, page) => {
   if (isNaN(userId)) throw 400;
- 
+
   let pagina = page;
   pagina >= 1 ? (pagina -= 1) : null;
 
@@ -70,7 +70,7 @@ exports.getByUserId = async (userId, page) => {
     limit: 8,
     offset: page ? pagina * 8 : 0,
   });
- 
+
   const { totalIncidents, incidents, totalPages, currentPage } = getPagingData(
     incidentsRequest,
     page
@@ -117,8 +117,13 @@ exports.getSearchedIncidents = async (filter, userId, userRoleId) => {
       ],
     });
     if (!results.length) throw 404;
-    if(results[0].dataValues.userId !== userId && userRoleId>1 && userId !== results[0].dataValues.assignedToUserId) throw 401
-    
+    if (
+      results[0].dataValues.userId !== userId &&
+      userRoleId > 1 &&
+      userId !== results[0].dataValues.assignedToUserId
+    )
+      throw 401;
+
     await getAssignedUser(results);
     await getUser(results);
     return results;
@@ -165,17 +170,16 @@ exports.noteInIncident = async (id, note, user) => {
 // ADITIONAL SERVICE FUNCTIONS
 
 async function autoAssignAnAdmin(incident) {
-  const incidentGeoCords = incident.geoCords.split(",");
-  const incidentLat = incidentGeoCords[0];
-  const incidentLong = incidentGeoCords[1];
+  const incidentLat = incident.geoCords.lat;
+  const incidentLong = incident.geoCords.lng;
   const adminArray = await userService.getAdminsGeoCords();
   if (!adminArray.length) return await incident.update({ assignedToUserId: 0 });
   var closest = adminArray.reduce(function (prev, curr) {
-    return Math.abs(curr.lat - incidentLat) <
-      Math.abs(prev.lat - incidentLat) &&
-      Math.abs(curr.long - incidentLong) < Math.abs(prev.long - incidentLong)
-      ? curr
-      : prev;
+    let currentCords =
+      Math.abs(curr.lat - incidentLat) + Math.abs(curr.long - incidentLong);
+    let previousCords =
+      Math.abs(prev.lat - incidentLat) + Math.abs(prev.long - incidentLong);
+    return currentCords < previousCords ? curr : prev;
   });
   const userId = closest.adminId;
   return await incident.update({ assignedToUserId: userId });
