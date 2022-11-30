@@ -27,7 +27,7 @@ exports.createIncident = async (incident) => {
   } else {
     uploadedPhoto = null;
   }
-  if (Object.keys(incident.geoCords).length === 0) {
+  if (incident.geoCords === null) {
     incident.geoCords = "";
   }
 
@@ -44,8 +44,10 @@ exports.createIncident = async (incident) => {
     userId: incident.userId,
   };
   const newIncident = await Incident.create(completeIncident);
-  if (Object.keys(incident.geoCords).length) {
+  if (incident.geoCords != "") {
     await autoAssignAnAdmin(newIncident);
+  } else {
+    newIncident.update({ assignedToUserId: 1 });
   }
   return newIncident;
 };
