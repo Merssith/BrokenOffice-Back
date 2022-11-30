@@ -51,7 +51,7 @@ User.init(
       type: s.INTEGER,
     },
     geoCords: {
-      type: s.STRING,
+      type: s.JSON,
     },
     place: {
       type: s.STRING,
