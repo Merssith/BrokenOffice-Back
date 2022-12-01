@@ -10,6 +10,9 @@ router.get("/all", validateAdmin,userController.getAllUsers);
 // GET USER BY ID - ADMIN
 router.get("/search/:id", validateAdmin,userController.getUser);
 
+// GET USER BY ROLE - ADMIN
+router.get("/filter", validateAdmin,userController.getFilteredUsers);
+
 // POST NEW USER
 router.post("/", userController.createUser);
 

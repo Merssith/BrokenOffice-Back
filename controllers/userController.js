@@ -3,8 +3,9 @@ const emailService = require("../services/emailService");
 const { generateToken } = require("../config/tokens");
 
 exports.getAllUsers = (req, res) => {
+  let { page } = req.query;
   userService
-    .getAllUsers()
+    .getAllUsers(page)
     .then((users) => res.status(200).send(users))
     .catch((err) => res.status(500).send(err));
 };
@@ -16,6 +17,15 @@ exports.getUser = (req, res) => {
     .then((user) => res.status(200).send(user))
     .catch((err) => res.status(500).send(err));
 };
+
+exports.getFilteredUsers = (req, res) => {
+  const { role, page } = req.query;
+  userService
+    .getFilteredUsers(role, page)
+    .then((filteredUsers) => res.status(200).send(filteredUsers))
+    .catch((err) => res.status(500).send(err));
+};
+
 
 exports.createUser = (req, res) => {
   const user = req.body;
