@@ -175,11 +175,10 @@ exports.getAdminsGeoCords = async () => {
   let adminArray = [];
   if (!admins) return adminArray;
   for (let i = 0; i < admins.length; i++) {
-    let adminGeoCords = admins[i].dataValues.geoCords.split(",");
     let admin = {
       adminId: admins[i].dataValues.id,
-      lat: adminGeoCords[0],
-      long: adminGeoCords[1],
+      lat: admins[i].dataValues.geoCords.lat,
+      long: admins[i].dataValues.geoCords.lng,
     };
     adminArray.push(admin);
   }

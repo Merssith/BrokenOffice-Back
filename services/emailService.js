@@ -14,7 +14,7 @@ exports.sendRegisterEmail = (user) => {
       }
       let template = handlebars.compile(html);
       let replacements = {
-        username: user.fullName,
+        userName: user.fullName,
       };
       let htmlToSend = template(replacements);
       let mailOptions = {

@@ -55,8 +55,10 @@ exports.createIncident = async (incident) => {
     userId: incident.userId,
   };
   const newIncident = await Incident.create(completeIncident);
-  if (incident.geoCords.length) {
+  if (incident.geoCords != "") {
     await autoAssignAnAdmin(newIncident);
+  } else {
+    newIncident.update({ assignedToUserId: 1 });
   }
   return newIncident;
 };
@@ -201,17 +203,16 @@ exports.noteInIncident = async (id, note, user) => {
 // ADITIONAL SERVICE FUNCTIONS
 
 async function autoAssignAnAdmin(incident) {
-  const incidentGeoCords = incident.geoCords.split(",");
-  const incidentLat = incidentGeoCords[0];
-  const incidentLong = incidentGeoCords[1];
+  const incidentLat = incident.geoCords.lat;
+  const incidentLong = incident.geoCords.lng;
   const adminArray = await userService.getAdminsGeoCords();
   if (!adminArray.length) return await incident.update({ assignedToUserId: 0 });
   var closest = adminArray.reduce(function (prev, curr) {
-    return Math.abs(curr.lat - incidentLat) <
-      Math.abs(prev.lat - incidentLat) &&
-      Math.abs(curr.long - incidentLong) < Math.abs(prev.long - incidentLong)
-      ? curr
-      : prev;
+    let currentCords =
+      Math.abs(curr.lat - incidentLat) + Math.abs(curr.long - incidentLong);
+    let previousCords =
+      Math.abs(prev.lat - incidentLat) + Math.abs(prev.long - incidentLong);
+    return currentCords < previousCords ? curr : prev;
   });
   const userId = closest.adminId;
   return await incident.update({ assignedToUserId: userId });

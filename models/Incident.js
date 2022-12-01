@@ -11,7 +11,7 @@ Incident.init(
       defaultValue: "PENDING",
     },
     geoCords: {
-      type: Sequelize.STRING,
+      type: Sequelize.JSON,
       allowNull: false,
     },
     place: {

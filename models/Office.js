@@ -11,7 +11,7 @@ Office.init(
       allowNull: false,
     },
     geoCords: {
-      type: s.STRING,
+      type: s.JSON,
       allowNull: false,
     },
   },
