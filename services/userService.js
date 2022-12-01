@@ -1,8 +1,11 @@
 const { User } = require("../models");
 const imageService = require("./imageService");
 
-exports.getAllUsers = async () => {
-  const users = await User.findAll({
+exports.getAllUsers = async (page) => {
+  let skipUsers = page;
+  skipUsers >= 1 ? (skipUsers -= 1) : null;
+
+  const usersRequest = await User.findAndCountAll({
     include: [
       {
         association: User.UserRole,
@@ -17,9 +20,54 @@ exports.getAllUsers = async () => {
         association: User.Incident,
       },
     ],
+    limit: 8,
+    offset: page ? skipUsers * 8 : 0,
+    distinct: true
   });
-  if (!users.length) throw 404;
-  return users;
+
+  const { totalUsers, users, totalPages, currentPage } = getPagingData(
+    usersRequest,
+    page
+  );
+
+  if (!usersRequest.rows.length) throw 404;
+  return { totalUsers, users, totalPages, currentPage };
+};
+
+exports.getFilteredUsers = async (role, page) => {
+  let skipUsers = page;
+  skipUsers >= 1 ? (skipUsers -= 1) : null;
+
+  const usersRequest = await User.findAndCountAll({
+    where: {
+      userRoleId: role,
+    },
+    include: [
+      {
+        association: User.UserRole,
+      },
+      {
+        association: User.Office,
+      },
+      {
+        association: User.Item,
+      },
+      {
+        association: User.Incident,
+      },
+    ],
+    limit: 8,
+    offset: page ? skipUsers * 8 : 0,
+    distinct: true
+  });
+
+  const { totalUsers, users, totalPages, currentPage } = getPagingData(
+    usersRequest,
+    page
+  );
+
+  if (!usersRequest.rows.length) throw 404;
+  return { totalUsers, users, totalPages, currentPage };
 };
 
 exports.getUser = async (id) => {
@@ -94,6 +142,7 @@ exports.editUser = async (id, body) => {
     telephone: body.telephone,
     geoCords: body.geoCords,
     place: body.place,
+    userRoleId: body.userRoleId
   };
   await user.update(editUser);
   return user;
@@ -162,4 +211,12 @@ exports.getMe = async (id) => {
     avatar: user.avatar,
     userRoleId: user.userRoleId,
   };
+};
+
+
+const getPagingData = (data, page) => {
+  const { count: totalUsers, rows: users } = data;
+  const currentPage = page ? page : 1;
+  const totalPages = Math.ceil(totalUsers / 8);
+  return { totalUsers, users, totalPages, currentPage };
 };

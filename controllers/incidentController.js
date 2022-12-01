@@ -2,8 +2,9 @@ const incidentService = require("../services/incidentService.js");
 const emailService = require("../services/emailService");
 
 exports.getAllIncidents = (req, res) => {
+  let { page } = req.query;
   incidentService
-    .getAllIncidents()
+    .getAllIncidents(page)
     .then((incidents) => res.status(200).send(incidents))
     .catch((err) => res.status(500).send(err));
 };
@@ -46,7 +47,7 @@ exports.deleteIncident = (req, res) => {
 };
 
 exports.getSearchedIncidents = (req, res) => {
-  const { status, id } = req.query;
+  const { status, id, page } = req.query;
   const userId = req.user.id
   const userRoleId = req.user.userRoleId
 
@@ -54,15 +55,16 @@ exports.getSearchedIncidents = (req, res) => {
   if (status) filter = status;
   if (id) filter = id;
   incidentService
-    .getSearchedIncidents(filter, userId, userRoleId)
+    .getSearchedIncidents(filter, userId, userRoleId, page)
     .then((searchedIncident) => res.status(200).send(searchedIncident))
     .catch((err) => res.status(500).send(err));
 };
 
 exports.assignedToMe = (req, res) => {
   const userId = req.user.id;
+  let { page } = req.query;
   incidentService
-    .assignedToMe(userId)
+    .assignedToMe(userId, page)
     .then((incidents) => res.status(200).send(incidents))
     .catch((err) => res.status(500).send(err));
 };
