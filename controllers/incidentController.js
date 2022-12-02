@@ -17,7 +17,6 @@ exports.getIncident = (req, res) => {
     .catch((err) => res.status(500).send(err));
 };
 
-
 exports.createIncident = (req, res) => {
   const incident = req.body;
   incidentService
@@ -55,12 +54,11 @@ exports.deleteIncident = (req, res) => {
     .catch((err) => res.status(500).send(err));
 };
 
-
 exports.getSearchedIncidents = (req, res) => {
   const { status, id, page } = req.query;
-  const userId = req.user.id
-  const userRoleId = req.user.userRoleId
-  
+  const userId = req.user.id;
+  const userRoleId = req.user.userRoleId;
+
   let filter = null;
   if (status) filter = status;
   if (id) filter = id;
@@ -96,7 +94,7 @@ exports.shareIncident = (req, res) => {
   const incidentId = req.params.id;
   const email = req.body.email;
   incidentService
-    .getSearchedIncidents(incidentId)
+    .getIncident(incidentId)
     .then((incident) => {
       emailService.sendIncidentShareEmail(incident, email);
       res.sendStatus(200);
