@@ -31,6 +31,19 @@ exports.getAllIncidents = async (page) => {
   return { totalIncidents, incidents, totalPages, currentPage };
 };
 
+exports.getIncident = async (id) => {
+  if (isNaN(id)) throw 400;
+  const incident = await Incident.findByPk(id, {
+    include: [
+      {
+        association: Incident.Item,
+      },
+    ]
+  });
+  if (!incident) throw 404;
+  return incident;
+};
+
 exports.createIncident = async (incident) => {
   if (Object.keys(incident).length === 0) return 400;
   if (incident.photo.length) {
