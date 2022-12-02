@@ -4,8 +4,11 @@ const formData = require("express-form-data");
 const { validateAuth,validateAdmin,validateSuperAdmin } = require("../middlewares/auth");
 const userController = require("../controllers/userController");
 
-// GET ALL USERS - ADMIN
+// GET ALL USERS - ADMIN - WITH PAGINATION
 router.get("/all", validateAdmin,userController.getAllUsers);
+
+// GET ALL USERS - MAP - WITHOUT PAGINATION
+router.get("/allUsers", validateAdmin,userController.getUsers);
 
 // GET USER BY ID - ADMIN
 router.get("/search/:id", validateAdmin,userController.getUser);
