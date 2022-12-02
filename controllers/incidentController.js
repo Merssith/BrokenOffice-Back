@@ -9,6 +9,15 @@ exports.getAllIncidents = (req, res) => {
     .catch((err) => res.status(500).send(err));
 };
 
+exports.getIncident = (req, res) => {
+  const id = req.params.id;
+  incidentService
+    .getIncident(id)
+    .then((user) => res.status(200).send(user))
+    .catch((err) => res.status(500).send(err));
+};
+
+
 exports.createIncident = (req, res) => {
   const incident = req.body;
   incidentService
@@ -45,6 +54,7 @@ exports.deleteIncident = (req, res) => {
     .then(() => res.sendStatus(202))
     .catch((err) => res.status(500).send(err));
 };
+
 
 exports.getSearchedIncidents = (req, res) => {
   const { status, id, page } = req.query;
