@@ -35,6 +35,29 @@ exports.getAllUsers = async (page) => {
   return { totalUsers, users, totalPages, currentPage };
 };
 
+exports.getUsers = async () => {
+ 
+  const users = await User.findAll({
+    include: [
+      {
+        association: User.UserRole,
+      },
+      {
+        association: User.Office,
+      },
+      {
+        association: User.Item,
+      },
+      {
+        association: User.Incident,
+      },
+    ],
+  });
+
+  if (!users.length) throw 404;
+  return users;
+};
+
 exports.getFilteredUsers = async (role, page) => {
   let skipUsers = page;
   skipUsers >= 1 ? (skipUsers -= 1) : null;

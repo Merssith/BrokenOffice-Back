@@ -10,6 +10,13 @@ exports.getAllUsers = (req, res) => {
     .catch((err) => res.status(500).send(err));
 };
 
+exports.getUsers = (req, res) => {
+  userService
+    .getUsers()
+    .then((users) => res.status(200).send(users))
+    .catch((err) => res.status(500).send(err));
+};
+
 exports.getUser = (req, res) => {
   const id = req.params.id;
   userService
