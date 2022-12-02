@@ -6,6 +6,7 @@ exports.getAllUsers = async (page) => {
   skipUsers >= 1 ? (skipUsers -= 1) : null;
 
   const usersRequest = await User.findAndCountAll({
+    order: [["createdAt", "DESC"]],
     include: [
       {
         association: User.UserRole,
@@ -22,7 +23,7 @@ exports.getAllUsers = async (page) => {
     ],
     limit: 8,
     offset: page ? skipUsers * 8 : 0,
-    distinct: true
+    distinct: true,
   });
 
   const { totalUsers, users, totalPages, currentPage } = getPagingData(
@@ -39,6 +40,7 @@ exports.getFilteredUsers = async (role, page) => {
   skipUsers >= 1 ? (skipUsers -= 1) : null;
 
   const usersRequest = await User.findAndCountAll({
+    order: [["createdAt", "DESC"]],
     where: {
       userRoleId: role,
     },

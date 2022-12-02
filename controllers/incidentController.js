@@ -11,8 +11,10 @@ exports.getAllIncidents = (req, res) => {
 
 exports.getIncident = (req, res) => {
   const id = req.params.id;
+  const userId = req.user.id;
+  const userRoleId = req.user.userRoleId;
   incidentService
-    .getIncident(id)
+    .getIncident(id, userId, userRoleId)
     .then((user) => res.status(200).send(user))
     .catch((err) => res.status(500).send(err));
 };
@@ -59,20 +61,17 @@ exports.getSearchedIncidents = (req, res) => {
   const userId = req.user.id;
   const userRoleId = req.user.userRoleId;
 
-  let filter = null;
-  if (status) filter = status;
-  if (id) filter = id;
   incidentService
-    .getSearchedIncidents(filter, userId, userRoleId, page)
+    .getSearchedIncidents(status, page)
     .then((searchedIncident) => res.status(200).send(searchedIncident))
     .catch((err) => res.status(500).send(err));
 };
 
 exports.assignedToMe = (req, res) => {
   const userId = req.user.id;
-  let { page } = req.query;
+  let { page, status } = req.query;
   incidentService
-    .assignedToMe(userId, page)
+    .assignedToMe(userId, status, page)
     .then((incidents) => res.status(200).send(incidents))
     .catch((err) => res.status(500).send(err));
 };

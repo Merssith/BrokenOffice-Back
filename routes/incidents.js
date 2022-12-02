@@ -11,9 +11,9 @@ const {
 router.get("/all", incidentController.getAllIncidents);
 
 // GET INCIDENT BY ID 
-router.get("/filter/:id", incidentController.getIncident);
+router.get("/filter/:id", validateAuth, incidentController.getIncident);
 
-// GET SEARCH INCIDENT BY ID / STATUS
+// GET SEARCH INCIDENT BY STATUS
 router.get("/search", validateAuth, incidentController.getSearchedIncidents);
 
 // PUT EDIT INCIDENT
