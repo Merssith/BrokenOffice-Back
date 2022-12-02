@@ -10,7 +10,8 @@ exports.getAllIncidents = async (page) => {
   let skipIncidents = page;
   skipIncidents >= 1 ? (skipIncidents -= 1) : null;
 
-  const incidentsRequest = await Incident.findAndCountAll({
+  let incidentsRequest = await Incident.findAndCountAll({
+    order: [["createdAt", "DESC"]],
     include: [
       {
         association: Incident.Item,
@@ -18,8 +19,8 @@ exports.getAllIncidents = async (page) => {
     ],
     limit: 8,
     offset: page ? skipIncidents * 8 : 0,
+    separate: true,
   });
-
   const { totalIncidents, incidents, totalPages, currentPage } = getPagingData(
     incidentsRequest,
     page
@@ -31,9 +32,9 @@ exports.getAllIncidents = async (page) => {
   return { totalIncidents, incidents, totalPages, currentPage };
 };
 
-exports.getIncident = async (id) => {
+exports.getIncident = async (id, userId, userRoleId) => {
   if (isNaN(id)) throw 400;
-  
+
   const incident = await Incident.findAll({
     where: { id },
     include: [
@@ -43,6 +44,13 @@ exports.getIncident = async (id) => {
     ],
   });
   if (!incident.length) throw 404;
+  if (
+    incident[0].userId !== userId &&
+    userRoleId > 1 &&
+    userId !== incident[0].assignedToUserId
+  )
+    throw 401;
+
   await getAssignedUser(incident);
   await getUser(incident);
   return incident;
@@ -96,9 +104,11 @@ exports.getByUserId = async (userId, page) => {
   skipIncidents >= 1 ? (skipIncidents -= 1) : null;
 
   const incidentsRequest = await Incident.findAndCountAll({
+    order: [["updatedAt", "DESC"]],
     where: { userId },
     limit: 8,
     offset: page ? skipIncidents * 8 : 0,
+    separate: true,
   });
 
   const { totalIncidents, incidents, totalPages, currentPage } = getPagingData(
@@ -118,65 +128,17 @@ exports.deleteIncident = async (id) => {
   return Incident.destroy({ where: { id } });
 };
 
-exports.getSearchedIncidents = async (filter, userId, userRoleId, page) => {
-  if (!filter) throw 400;
+exports.getSearchedIncidents = async (status, page) => {
+  if (!status) throw 400;
 
-  let skipIncidents = page;
-  skipIncidents >= 1 ? (skipIncidents -= 1) : null;
-
-  if (isNaN(filter)) {
-    const incidentsRequest = await Incident.findAndCountAll({
-      where: {
-        status: filter,
-      },
-      include: [
-        {
-          association: Incident.Item,
-        },
-      ],
-      limit: 8,
-      offset: page ? skipIncidents * 8 : 0,
-    });
-    if (!incidentsRequest) throw 404;
-    const { totalIncidents, incidents, totalPages, currentPage } =
-      getPagingData(incidentsRequest, page);
-    await getAssignedUser(incidentsRequest.rows);
-    await getUser(incidentsRequest.rows);
-    return { totalIncidents, incidents, totalPages, currentPage };
-  } else {
-    const incidentsRequest = await Incident.findAndCountAll({
-      where: {
-        id: filter,
-      },
-      include: [
-        {
-          association: Incident.Item,
-        },
-      ],
-      limit: 8,
-      offset: page ? skipIncidents * 8 : 0,
-    });
-    if (!incidentsRequest) throw 404;
-    if (
-      incidentsRequest.rows[0].userId !== userId &&
-      userRoleId > 1 &&
-      userId !== incidentsRequest.rows[0].assignedToUserId
-    )
-      throw 401;
-    const { totalIncidents, incidents, totalPages, currentPage } =
-      getPagingData(incidentsRequest, page);
-    await getAssignedUser(incidentsRequest.rows);
-    await getUser(incidentsRequest.rows);
-    return { totalIncidents, incidents, totalPages, currentPage };
-  }
-};
-
-exports.assignedToMe = async (userId, page) => {
   let skipIncidents = page;
   skipIncidents >= 1 ? (skipIncidents -= 1) : null;
 
   const incidentsRequest = await Incident.findAndCountAll({
-    where: { assignedToUserId: userId },
+    order: [["createdAt", "DESC"]],
+    where: {
+      status,
+    },
     include: [
       {
         association: Incident.Item,
@@ -184,7 +146,50 @@ exports.assignedToMe = async (userId, page) => {
     ],
     limit: 8,
     offset: page ? skipIncidents * 8 : 0,
+    distinct: true,
   });
+
+  if (!incidentsRequest) throw 404;
+  const { totalIncidents, incidents, totalPages, currentPage } = getPagingData(
+    incidentsRequest,
+    page
+  );
+
+  await getAssignedUser(incidentsRequest.rows);
+  await getUser(incidentsRequest.rows);
+  return { totalIncidents, incidents, totalPages, currentPage };
+};
+
+exports.assignedToMe = async (userId, status, page) => {
+  let skipIncidents = page;
+  skipIncidents >= 1 ? (skipIncidents -= 1) : null;
+
+  let incidentsRequest = [];
+  status
+    ? (incidentsRequest = await Incident.findAndCountAll({
+        order: [["createdAt", "DESC"]],
+        where: { status, assignedToUserId: userId },
+        include: [
+          {
+            association: Incident.Item,
+          },
+        ],
+        limit: 8,
+        offset: page ? skipIncidents * 8 : 0,
+        separate: true
+      }))
+    : (incidentsRequest = await Incident.findAndCountAll({
+        order: [["createdAt", "DESC"]],
+        where: { assignedToUserId: userId },
+        include: [
+          {
+            association: Incident.Item,
+          },
+        ],
+        limit: 8,
+        offset: page ? skipIncidents * 8 : 0,
+        separate: true
+      }));
 
   const { totalIncidents, incidents, totalPages, currentPage } = getPagingData(
     incidentsRequest,
@@ -298,6 +303,7 @@ async function predictItem(photo, user) {
 
 const getPagingData = (data, page) => {
   const { count: totalIncidents, rows: incidents } = data;
+
   const currentPage = page ? page : 1;
   const totalPages = Math.ceil(totalIncidents / 8);
   return { totalIncidents, incidents, totalPages, currentPage };
