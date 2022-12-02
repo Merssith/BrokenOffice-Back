@@ -33,14 +33,18 @@ exports.getAllIncidents = async (page) => {
 
 exports.getIncident = async (id) => {
   if (isNaN(id)) throw 400;
-  const incident = await Incident.findByPk(id, {
+  
+  const incident = await Incident.findAll({
+    where: { id },
     include: [
       {
         association: Incident.Item,
       },
-    ]
+    ],
   });
-  if (!incident) throw 404;
+  if (!incident.length) throw 404;
+  await getAssignedUser(incident);
+  await getUser(incident);
   return incident;
 };
 
