@@ -2,9 +2,9 @@ const { Incident } = require("../models/");
 const { getDate } = require("../utils/functions");
 const userService = require("./userService");
 const imageService = require("./imageService");
+const itemService = require("./itemService.js");
 const sequelize = require("sequelize");
 const Op = sequelize.Op;
-const itemService = require("./itemService.js");
 
 exports.getAllIncidents = async (page) => {
   let skipIncidents = page;
@@ -58,24 +58,17 @@ exports.getIncident = async (id, userId, userRoleId) => {
 
 exports.createIncident = async (incident) => {
   if (Object.keys(incident).length === 0) return 400;
-  if (incident.photo.length) {
-    uploadedPhoto = await uploadIncidentPhoto(incident.photo);
-  } else {
-    uploadedPhoto = null;
-  }
   if (incident.geoCords === null) {
     incident.geoCords = "";
   }
-
-  const item = await predictItem(uploadedPhoto, incident.userId);
-
+  const item = await predictItem(incident.photo, incident.userId);
   const completeIncident = {
     status: incident.status,
     place: incident.place,
     subject: incident.subject,
     geoCords: incident.geoCords,
     details: incident.details,
-    photo: uploadedPhoto,
+    photo: incident.photo,
     itemId: item,
     userId: incident.userId,
   };
@@ -176,7 +169,7 @@ exports.assignedToMe = async (userId, status, page) => {
         ],
         limit: 8,
         offset: page ? skipIncidents * 8 : 0,
-        separate: true
+        separate: true,
       }))
     : (incidentsRequest = await Incident.findAndCountAll({
         order: [["createdAt", "DESC"]],
@@ -188,7 +181,7 @@ exports.assignedToMe = async (userId, status, page) => {
         ],
         limit: 8,
         offset: page ? skipIncidents * 8 : 0,
-        separate: true
+        separate: true,
       }));
 
   const { totalIncidents, incidents, totalPages, currentPage } = getPagingData(
@@ -220,6 +213,15 @@ exports.noteInIncident = async (id, note, user) => {
     await incident.update({ notes: [insertedNote] });
   }
   return incident;
+};
+
+exports.uploadIncidentPhoto = async (incidentPhoto) => {
+  try {
+    const uploadedPhoto = await imageService.uploadIncidentPhoto(incidentPhoto);
+    return uploadedPhoto;
+  } catch {
+    throw 400;
+  }
 };
 
 // ADITIONAL SERVICE FUNCTIONS
@@ -257,15 +259,6 @@ async function getUser(incidentArray) {
       let user = await userService.getMe(userId);
       incidentArray[i].dataValues.user = user;
     }
-  }
-}
-
-async function uploadIncidentPhoto(photo) {
-  try {
-    const uploadedPhoto = await imageService.uploadIncidentPhoto(photo);
-    return uploadedPhoto;
-  } catch {
-    throw 400;
   }
 }
 
