@@ -100,3 +100,11 @@ exports.shareIncident = (req, res) => {
     })
     .catch((err) => res.status(500).send(err));
 };
+
+exports.uploadIncidentPhoto = (req, res) => {
+  const incidentPhoto = req.body.incidentPhoto;
+  incidentService
+    .uploadIncidentPhoto(incidentPhoto)
+    .then((photoUrl) => res.status(200).send(photoUrl))
+    .catch((err) => res.status(500).send(err));
+};

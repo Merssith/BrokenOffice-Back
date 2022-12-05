@@ -10,7 +10,7 @@ const {
 // GET ALL INCIDENTS
 router.get("/all", incidentController.getAllIncidents);
 
-// GET INCIDENT BY ID 
+// GET INCIDENT BY ID
 router.get("/filter/:id", validateAuth, incidentController.getIncident);
 
 // GET SEARCH INCIDENT BY STATUS
@@ -36,5 +36,8 @@ router.post("/note/:id", validateAuth, incidentController.noteInIncident);
 
 //SHARE AN INICIDENT
 router.post("/share/:id", incidentController.shareIncident);
+
+//UPLOAD INCIDENT PHOTO
+router.post("/photo", incidentController.uploadIncidentPhoto);
 
 module.exports = router;
