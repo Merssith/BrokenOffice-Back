@@ -122,8 +122,7 @@ You must meet the following pre-requisites to be able to use this project
 
 <p align="center"><img src="https://cdn.shopify.com/s/files/1/0057/5668/2355/files/Postman-logo-orange-2021_1155x.png?v=1637252529" alt="Logo" width="40%"></p>
 
-Detailed documentation of all API methods can be found [here](https://documenter.getpostman.com/view/18263083/2s8YzP35ck).
-You can also download the complete [Postman collection](https://api.postman.com/collections/18263083-ae76eece-22fc-491a-a564-3828736b5f04?access_key=PMAT-01GKM9HZEPR2NNHN1EJ14PKYRH).
+Detailed documentation of all API methods can be found <a href="https://documenter.getpostman.com/view/18263083/2s8YzP35ck" target="_blank">HERE</a>. You can also download the complete [Postman collection](https://api.postman.com/collections/18263083-ae76eece-22fc-491a-a564-3828736b5f04?access_key=PMAT-01GKM9HZEPR2NNHN1EJ14PKYRH).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -161,7 +160,7 @@ You can also download the complete [Postman collection](https://api.postman.com/
 ## Contributing
 
 <p>Contributions from the Dev community help us learn, be inspired, and create new things! All contributions are welcome!</p>
-<p>If you have any suggestions to improve our project, please fork the repository and create a pull request. Or You can also simply open an issue.</p>
+<p>If you have any suggestions to improve our project, please fork the repository and create a pull request. Or You can open an issue.</p>
 <p>Thanks again!</p>
 
 1. Fork the Project
@@ -176,11 +175,11 @@ You can also download the complete [Postman collection](https://api.postman.com/
 
 ## Contact
 
-- Mercedes Salcedo » [Email](mercedes.salcedo1989@gmail.com) - [LinkedIn](https://www.linkedin.com/in/mercedessalcedojobs/)
-- Patricio Imbrogno » [Email](patricioimbrogno@gmail.com) - [LinkedIn](https://www.linkedin.com/in/patricio-imbrogno)
-- Rodrigo Escalera » [Email](roescal347@gmail.com) - [LinkedIn](https://www.linkedin.com/in/rodrigo-escalera-a00a97252/)
-- Juan Manuel Arias » [Email](juanmaariasrodriguez@gmail.com) - [LinkedIn](https://www.linkedin.com/in/juan-manuel-arias-rodriguez/)
-- Leandro Echezuri » [Email](leandro.echezuri@gmail.com) - [LinkedIn](https://www.linkedin.com/in/leandro-echezuri-671b58233/)
+- Mercedes Salcedo » [Email](mailto:mercedes.salcedo1989@gmail.com) - [LinkedIn](https://www.linkedin.com/in/mercedessalcedojobs/)
+- Patricio Imbrogno » [Email](mailto:patricioimbrogno@gmail.com) - [LinkedIn](https://www.linkedin.com/in/patricio-imbrogno)
+- Rodrigo Escalera » [Email](mailto:roescal347@gmail.com) - [LinkedIn](https://www.linkedin.com/in/rodrigo-escalera-a00a97252/)
+- Juan Manuel Arias » [Email](mailto:juanmaariasrodriguez@gmail.com) - [LinkedIn](https://www.linkedin.com/in/juan-manuel-arias-rodriguez/)
+- Leandro Echezuri » [Email](mailto:leandro.echezuri@gmail.com) - [LinkedIn](https://www.linkedin.com/in/leandro-echezuri-671b58233/)
 
 Project Link: [https://github.com/Merssith/BrokenOffice-Back](https://github.com/Merssith/BrokenOffice-Back)
 
