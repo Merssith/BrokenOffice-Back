@@ -51,7 +51,7 @@
 
 ## About The Proyect
 
-<p style="text-align:center;"><img src="utils/images/project.png" alt="Proyect" width="80%"></p>
+<p align="center"><img src="utils/images/project.png" alt="Proyect" width="100%"></p>
 
 Mobile first application that allows reporting problems and damaged items in the offices or homes of globers using geolocation, machine learning and other technologies to make the experience as simple as possible.
 
@@ -120,7 +120,7 @@ You must meet the following pre-requisites to be able to use this project
 
 ## API Documentation
 
-<p style="text-align:center;"><img src="https://cdn.shopify.com/s/files/1/0057/5668/2355/files/Postman-logo-orange-2021_1155x.png?v=1637252529" alt="Logo" width="40%"></p>
+<p align="center"><img src="https://cdn.shopify.com/s/files/1/0057/5668/2355/files/Postman-logo-orange-2021_1155x.png?v=1637252529" alt="Logo" width="40%"></p>
 
 Detailed documentation of all API methods can be found [here](https://documenter.getpostman.com/view/18263083/2s8YzP35ck).
 You can also download the complete [Postman collection](https://api.postman.com/collections/18263083-ae76eece-22fc-491a-a564-3828736b5f04?access_key=PMAT-01GKM9HZEPR2NNHN1EJ14PKYRH).
