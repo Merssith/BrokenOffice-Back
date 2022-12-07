@@ -1,7 +1,6 @@
 const axios = require("axios");
 const { expect } = require("chai");
 const { faker } = require("@faker-js/faker");
-const { Done } = require("@mui/icons-material");
 
 describe("Users", async () => {
   it("should be able to login user", async () => {
