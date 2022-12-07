@@ -3,13 +3,33 @@ require("dotenv").config();
 
 const generateToken = (payload) => {
   const token = jwt.sign({ user: payload }, process.env.SECRET, {
-    expiresIn: "30d",
+    expiresIn: "3d",
   });
   return token;
+};
+
+const generateRefreshToken = (payload) => {
+  const refreshToken = jwt.sign(
+    { user: payload },
+    process.env.SECRET_REFRESHTOKEN,
+    {
+      expiresIn: "10d",
+    }
+  );
+  return refreshToken;
 };
 
 const validateToken = (token) => {
   return jwt.verify(token, process.env.SECRET);
 };
 
-module.exports = { generateToken, validateToken };
+const validateRefreshToken = (refreshToken) => {
+  return jwt.verify(refreshToken, process.env.SECRET_REFRESHTOKEN);
+};
+
+module.exports = {
+  generateToken,
+  validateToken,
+  generateRefreshToken,
+  validateRefreshToken,
+};

@@ -1,6 +1,6 @@
 const userService = require("../services/userService.js");
 const emailService = require("../services/emailService");
-const { generateToken } = require("../config/tokens");
+const { generateToken, generateRefreshToken } = require("../config/tokens");
 
 exports.getAllUsers = (req, res) => {
   let { page } = req.query;
@@ -33,7 +33,6 @@ exports.getFilteredUsers = (req, res) => {
     .catch((err) => res.status(500).send(err));
 };
 
-
 exports.createUser = (req, res) => {
   const user = req.body;
   userService
@@ -51,6 +50,8 @@ exports.loginUser = async (req, res) => {
     .loginUser(email, password)
     .then((payload) => {
       const token = generateToken(payload);
+      const refreshToken = generateRefreshToken(payload);
+      userService.putRefreshToken(payload.id, refreshToken);
       res.cookie("token", token);
       res.send(payload);
     })
@@ -88,5 +89,16 @@ exports.updateUserAvatar = (req, res) => {
   userService
     .updateUserAvatar(id, avatar)
     .then((updatedUser) => res.status(202).send(updatedUser))
+    .catch((err) => res.status(500).send(err));
+};
+
+exports.refreshToken = (req, res) => {
+  userService
+    .refreshToken(req.user)
+    .then((newToken) => {
+      res.clearCookie("token");
+      res.cookie("token", newToken);
+      res.sendStatus(204);
+    })
     .catch((err) => res.status(500).send(err));
 };
