@@ -12,16 +12,6 @@ const users = [
     officeId: 3,
   },
   {
-    name: "Patricio",
-    lastName: "Imbrogno",
-    email: "patricioimbrogno@gmail.com",
-    password: "Patricio0178!",
-    telephone: 7654321,
-    geoCords: { lat: -31.065328, lng: -59.776482 },
-    userRoleId: 3,
-    officeId: 3,
-  },
-  {
     name: "Juana",
     lastName: "Perez",
     email: "juana@1.com",
