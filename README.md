@@ -73,7 +73,7 @@ Mobile first application that allows reporting problems and damaged items in the
 - DotEnv
 - Mocha
 - Chai
-- Bluebird
+- Axios
 - Cloudinary
 - DataDog
 
@@ -152,6 +152,8 @@ Detailed documentation of all API methods can be found <a href="https://document
   - [x] Chat
   - [x] Backend monitoring
   - [x] Email service
+  - [x] PWA
+  - [x] DarkMode
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
