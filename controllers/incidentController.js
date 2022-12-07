@@ -21,6 +21,7 @@ exports.getIncident = (req, res) => {
 
 exports.createIncident = (req, res) => {
   const incident = req.body;
+  
   incidentService
     .createIncident(incident)
     .then((newIncident) => {

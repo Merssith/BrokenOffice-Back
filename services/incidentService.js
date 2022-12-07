@@ -61,7 +61,10 @@ exports.createIncident = async (incident) => {
   if (incident.geoCords === null) {
     incident.geoCords = "";
   }
+
   const item = await predictItem(incident.photo, incident.userId);
+
+  
   const completeIncident = {
     status: incident.status,
     place: incident.place,
@@ -139,7 +142,7 @@ exports.getSearchedIncidents = async (status, page) => {
     ],
     limit: 8,
     offset: page ? skipIncidents * 8 : 0,
-    distinct: true,
+    separate: true,
   });
 
   if (!incidentsRequest) throw 404;
