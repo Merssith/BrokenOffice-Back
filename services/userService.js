@@ -1,5 +1,10 @@
 const { User } = require("../models");
 const imageService = require("./imageService");
+const {
+  validateRefreshToken,
+  generateToken,
+  generateRefreshToken,
+} = require("../config/tokens");
 
 exports.getAllUsers = async (page) => {
   let skipUsers = page;
@@ -21,6 +26,9 @@ exports.getAllUsers = async (page) => {
         association: User.Incident,
       },
     ],
+    attributes: {
+      exclude: ["refreshToken"],
+    },
     limit: 8,
     offset: page ? skipUsers * 8 : 0,
     distinct: true,
@@ -36,7 +44,6 @@ exports.getAllUsers = async (page) => {
 };
 
 exports.getUsers = async () => {
- 
   const users = await User.findAll({
     include: [
       {
@@ -52,6 +59,9 @@ exports.getUsers = async () => {
         association: User.Incident,
       },
     ],
+    attributes: {
+      exclude: ["refreshToken"],
+    },
   });
 
   if (!users.length) throw 404;
@@ -81,9 +91,12 @@ exports.getFilteredUsers = async (role, page) => {
         association: User.Incident,
       },
     ],
+    attributes: {
+      exclude: ["refreshToken"],
+    },
     limit: 8,
     offset: page ? skipUsers * 8 : 0,
-    distinct: true
+    distinct: true,
   });
 
   const { totalUsers, users, totalPages, currentPage } = getPagingData(
@@ -112,6 +125,9 @@ exports.getUser = async (id) => {
         association: User.Incident,
       },
     ],
+    attributes: {
+      exclude: ["refreshToken"],
+    },
   });
   if (!user) throw 404;
   return user;
@@ -167,7 +183,7 @@ exports.editUser = async (id, body) => {
     telephone: body.telephone,
     geoCords: body.geoCords,
     place: body.place,
-    userRoleId: body.userRoleId
+    userRoleId: body.userRoleId,
   };
   await user.update(editUser);
   return user;
@@ -237,6 +253,39 @@ exports.getMe = async (id) => {
   };
 };
 
+exports.putRefreshToken = async (id, refreshToken) => {
+  const user = await User.findByPk(id);
+  if (!user) throw 404;
+  const updatedUser = await user.update({
+    refreshToken: [refreshToken],
+  });
+  return updatedUser;
+};
+
+exports.refreshToken = async (reqUser) => {
+  const user = await User.findByPk(reqUser.id);
+  if (!user) throw 404;
+  const refreshToken = user.refreshToken[0];
+  const validate = validateRefreshToken(refreshToken);
+  if (!validate) throw 401;
+  const payload = {
+    id: user.id,
+    name: user.name,
+    lastName: user.lastName,
+    fullName: user.fullName,
+    email: user.email,
+    telephone: user.telephone,
+    geoCords: user.geoCords,
+    place: user.place,
+    avatar: user.avatar,
+  };
+  const newRefreshToken = generateRefreshToken(payload);
+  this.putRefreshToken(user.id, newRefreshToken);
+  const newToken = generateToken(payload);
+  return newToken;
+};
+
+// ADITIONAL FUNCTIONS
 
 const getPagingData = (data, page) => {
   const { count: totalUsers, rows: users } = data;

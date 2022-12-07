@@ -61,6 +61,9 @@ User.init(
       defaultValue:
         "https://res.cloudinary.com/dsdiadotw/image/upload/v1668696029/avatar_default_rgp6yr.png",
     },
+    refreshToken: {
+      type: s.JSON,
+    },
   },
   { sequelize: db, modelName: "user" }
 );
